@@ -9,7 +9,11 @@ $lang = array(
 
 	'module_home' => 'entry_widgets Home',
 	'entry_widgets' => 'Widgets',
-	'widgets_instance_title' => 'Widget Title'
+	'widgets_instance_title' => 'Widget Title',
+	'widget_areas' => 'Widget Areas',
+	'add_widget_area' => 'Add a Widget Area',
+	'area_title' => 'Full Widget Area Name',
+	'area_slug' => 'Short Name<br />single word, no spaces'
 	
 );
 

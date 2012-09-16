@@ -121,7 +121,7 @@
 
 	<li data-area-id="<?= $settings['area_id'] ?>" class="widget-area-wrapper">
 
-		<button class="add-widget-button">Add a Widget</button>
+		
 
 		<ul class="entry_widget_list" id="widget-list-<?= $settings['area_id'] ?>" style="display:none;">
 			<li><h3>Choose a widget type</h3></li>
@@ -146,15 +146,8 @@
 				}
 			?>
 		</div>
+
+		<button class="add-widget-button">Add a Widget</button>
 	</li>
 
 </ul>
-
-
-
-
-
-
-<!--
-Array ( [0] => stdClass Object ( [id] => 1 [slug] => html [title] => HTML [description] => Create blocks of custom HTML. [author] => Phil Sturgeon [website] => http://philsturgeon.co.uk/ [version] => 1 [site_id] => 0 ) )
--->

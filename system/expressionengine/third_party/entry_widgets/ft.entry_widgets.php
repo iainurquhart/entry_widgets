@@ -45,6 +45,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 		$this->EE->load->library('entry_widget');
 		$this->_add_widget_assets();
+		$i = 0;
 
 		$this->data->available_widgets = array();
 
@@ -61,9 +62,38 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->data->widgets = '';
 
 
-		if($data) // if something on the publish page fails to validate, we've got access to our data
+		// @todo - work on displaying widgets if something else on the publish page
+		// fails to validate.
+		// subsequent failures cause errors atm.
+		if(is_array($data)) // if something on the publish page fails to validate, we've got access to our data
 		{
-			// print_r($data);
+
+			foreach($data as $widget)
+			{
+				
+				$w_data['widget'] = (array) $this->EE->entry_widget->get_widget($widget['widget_id']);
+				$w_data['widget_instance'] = $widget;
+				$w_data['widget_area'] 	= (array) $this->EE->entry_widget->get_area( $widget['widget_area_id'] );
+				$w_data['row_count']		= $i++;
+				$w_data['via_validation'] = TRUE;
+				$w_data['field_name']	= $this->field_name;
+
+				$w_data['form'] = $this->EE->entry_widget->render_backend(
+					$w_data['widget']['slug'], 
+					isset($w_data['widget_instance']['options']) ? $w_data['widget_instance']['options'] : array(),
+					$this->field_name.'['.$w_data['row_count'].'][options]['.$w_data['widget']['slug'].']'
+				);
+
+
+				array_walk_recursive($w_data, array($this, '_filter'));
+
+
+				$this->data->widgets[] = $this->EE->load->view('field/add_instance', $w_data, TRUE);
+
+			}
+
+			return $this->EE->load->view('field/index', $this->data, TRUE);
+
 		}
 
 		// are we editing an entry
@@ -72,12 +102,15 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
     		$entry_id = $this->EE->input->get_post('entry_id');
 
+
+
     		$this->data->widget_instances = $this->EE->entry_widget->list_area_instances(
 							   		$this->data->settings['area_slug'], 
 									$entry_id
 								);
 
-    		$i = 0;
+
+    		
 
 			foreach($this->data->widget_instances as $widget)
 			{
@@ -96,14 +129,17 @@ class Entry_widgets_ft extends EE_Fieldtype {
 				);
 
 				$this->data->widgets[] = $this->EE->load->view('field/add_instance', $data, TRUE);
-				
-				unset($data);
+
 			}
 
 		
 		}
 
 		return $this->EE->load->view('field/index', $this->data, TRUE);
+	}
+
+	public static function _filter(&$value) {
+  		$value = htmlspecialchars_decode($value);
 	}
 
 
@@ -119,11 +155,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 			$this->EE->cp->add_js_script('ui', 'sortable');
 		}
-	}
-
-	function post_save($data)
-	{
-
 	}
 	
 	// --------------------------------------------------------------------
@@ -141,12 +172,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		return 'hello';
 	}
 
-	function validate($data)
-	{	
-		// print_r($data);
-			// exit('here');
-		// print_r($data);
-	}
 	
 
 	// --------------------------------------------------------------------

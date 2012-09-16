@@ -43,7 +43,9 @@ class Entry_widgets_tab {
 	function publish_tabs($channel_id, $entry_id = '')
 	{
 
-		$widget_areas 	= $this->EE->entry_widget->list_areas();
+		$widget_areas = $this->EE->entry_widget->list_areas();
+
+		$settings = array();
 
 		foreach ($widget_areas as $area) 
 		{
@@ -52,7 +54,7 @@ class Entry_widgets_tab {
 				'field_id' => 		'widget_'.$area->slug,
 				'field_label'       => $area->title,
 				'field_required'    => 'n',
-				'field_data'        => $entry_id,
+				'field_data'        => '',
 				'field_list_items'  => '',
 				'field_fmt'     => '',
 				'field_instructions'    => '',
@@ -68,6 +70,8 @@ class Entry_widgets_tab {
 			);
         }
 
+       
+
         return $settings;
 	}
 
@@ -77,12 +81,11 @@ class Entry_widgets_tab {
 	{
 
 		$entry_id = $params['entry_id'];
-
 		$widget_areas 	= $this->EE->entry_widget->list_areas();
 
 		foreach ($widget_areas as $area) 
 		{
-			
+
 			$widget_data = $params['mod_data']['widget_'.$area->slug];
 			
 			$instances = array();
@@ -96,19 +99,18 @@ class Entry_widgets_tab {
 				continue;
 			}
 
-			// prune any instances not received
+			// gather instance ids
 			foreach($widget_data as $key => $widget)
 			{
-				// build our list of previous instance ids
 				if(isset($widget['instance_id']))
 				{
 					$instances[] = $widget['instance_id'];
 				}
 			}
-				
+			
+			// remove any instances not submitted
 			if($instances)
 			{
-
 				$this->EE->db->where_not_in('id', $instances);
 				$this->EE->db->where('widget_area_id', $area->id );
 				$this->EE->db->delete('entry_widget_instances');
@@ -117,8 +119,8 @@ class Entry_widgets_tab {
 			// process new and update existing
 			foreach($widget_data as $key => $widget)
 			{
-
-				if( isset($widget['instance_id']) && $widget['instance_id'] != '') // editing an instance
+				// edit an existing
+				if( isset($widget['instance_id']) && $widget['instance_id'] != '')
 				{
 					$result = $this->EE->entry_widget->edit_instance(
 						$widget['instance_id'], // this should be widget_instance_id
@@ -131,7 +133,7 @@ class Entry_widgets_tab {
 					);
 
 				}
-				else
+				else // add new
 				{
 
 					$result = $this->EE->entry_widget->add_instance( 
@@ -144,13 +146,10 @@ class Entry_widgets_tab {
 					);
 
 				}
-	
 			}
 
 		}
 
-		
-		
 	}
 
 	/**
@@ -159,9 +158,7 @@ class Entry_widgets_tab {
 	 */
 	function validate_publish($params)
 	{
-
-	    
-
+		// @todo
 	}
 
 

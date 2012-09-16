@@ -131,4 +131,18 @@ class Entry_widgets_m
 		return $this->EE->db->get()->result();
 	}
 
+
+
+
+	public function insert_area($input)
+	{
+		$this->EE->db->insert('entry_widget_areas', array(
+			'title' => $input['title'],
+			'slug' 	=> $input['slug'],
+			'site_id' => $this->site_id
+		));
+
+		return $this->EE->db->insert_id();
+	}
+
 }

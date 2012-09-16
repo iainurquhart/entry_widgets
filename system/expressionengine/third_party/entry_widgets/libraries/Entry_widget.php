@@ -282,10 +282,12 @@ $widget['instance_id'], // this should be widget_instance_id
 		$slug = $this->EE->entry_widgets_m->get_widget_by('id', $widget_id)->slug;
 
 
+		/*
 		if ( $error = $this->validation_errors($slug, $options, $key) )
 		{
 			return array('status' => 'error', 'error' => $error);
 		}
+		*/
 
 		// The widget has to do some stuff before it saves
 		$options = $this->EE->entry_widget->prepare_options($slug, $options);
@@ -315,13 +317,17 @@ $widget['instance_id'], // this should be widget_instance_id
 
 		$slug = $this->get_widget($widget_id)->slug;
 
+		/*
 		if ( $error = $this->validation_errors($slug, $options, $key) )
 		{
 			return array('status' => 'error', 'error' => $error);
 		}
+		*/
 
 		// The widget has to do some stuff before it saves
 		$options = $this->prepare_options($slug, $options);
+
+		
 
 		$this->EE->entry_widgets_m->insert_instance(array(
 			'entry_id' => $entry_id,
@@ -358,7 +364,7 @@ $widget['instance_id'], // this should be widget_instance_id
     		// print_r($this->_widget->fields); 
     		// entry_widgets__widget_data[1][html]
     		// entry_widgets__widget_data[1][options][html]
-
+    		/*
     		$this->EE->load->library('form_validation');
     		$this->EE->form_validation->set_rules($this->_widget->fields);
 
@@ -368,6 +374,7 @@ $widget['instance_id'], // this should be widget_instance_id
     		{
     			return validation_errors();
     		}
+    		*/
     	}
 	}
 
@@ -401,6 +408,19 @@ $widget['instance_id'], // this should be widget_instance_id
 	function list_area_instances($slug, $entry_id = '')
 	{
 		return $this->EE->entry_widgets_m->get_by_area($slug, $entry_id);
+	}
+
+
+	function add_area($input)
+	{
+		if($input->title == '' || $input->slug == '')
+			show_error('You must add a title and a slug.');
+
+		$this->EE->load->helper('url');
+
+		$input->slug = url_title($input->slug, '_', TRUE);
+
+		return $this->EE->entry_widgets_m->insert_area((array)$input);
 	}
 
 

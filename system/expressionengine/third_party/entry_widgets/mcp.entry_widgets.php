@@ -26,6 +26,8 @@ class Entry_widgets_mcp {
 	public $return_data;
 	
 	private $_base_url;
+
+	var $module_name = "entry_widgets";
 	
 	/**
 	 * Constructor
@@ -33,8 +35,13 @@ class Entry_widgets_mcp {
 	public function __construct()
 	{
 		$this->EE =& get_instance();
+
+		// define some vars
+		$this->_form_base_url 	= 'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module='.$this->module_name;
+		$this->_base_url		= BASE.AMP.$this->_form_base_url;
+		$this->_theme_base_url 	= $this->EE->config->item('theme_folder_url').'third_party/'.$this->module_name.'/';
+		$this->site_id	 		= $this->EE->config->item('site_id');
 		
-		$this->_base_url = BASE.AMP.'C=addons_modules'.AMP.'M=show_module_cp'.AMP.'module=entry_widgets';
 		
 		$this->EE->cp->set_right_nav(array(
 			'module_home'	=> $this->_base_url,
@@ -53,7 +60,27 @@ class Entry_widgets_mcp {
 	 */
 	public function index()
 	{
-		return 'Nothing here yet';
+		$this->EE->cp->set_variable('cp_page_title', lang('entry_widgets_module_name'));
+		$this->EE->load->library('entry_widget');
+		$this->EE->load->library('table');
+
+		$data = array();
+
+		$data['widget_areas'] = $this->EE->entry_widget->list_areas();
+		$data['_form_base_url'] = $this->_form_base_url;
+
+		if($_POST)
+		{
+
+			$w_data->widget_area->title 	= $this->EE->input->get_post('area_title');
+			$w_data->widget_area->slug 	= $this->EE->input->get_post('area_slug');
+		
+			$w_data->widget_area->id 		= $this->EE->entry_widget->add_area( $w_data->widget_area );
+			$this->EE->functions->redirect($this->_base_url);
+		}
+
+		return $this->EE->load->view('module/index', $data, TRUE);
+
 	}
 
 
