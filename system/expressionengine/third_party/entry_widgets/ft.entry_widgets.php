@@ -44,7 +44,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	{
 
 		$this->EE->load->library('entry_widget');
-		$this->EE->cp->add_js_script('ui', 'sortable');
+		$this->_add_widget_assets();
 
 		$this->data->available_widgets = array();
 
@@ -56,10 +56,8 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		}
 
 		$this->data->available_widgets = $this->EE->entry_widget->list_available_widgets();
-		$this->data->available_widget_areas 	= (array) $this->EE->entry_widget->list_areas();
-
+		$this->data->settings = $this->settings['field_settings'];
 		$this->data->field_name = $this->field_name;
-
 		$this->data->widgets = '';
 
 
@@ -68,46 +66,59 @@ class Entry_widgets_ft extends EE_Fieldtype {
 			// print_r($data);
 		}
 
-
-
 		// are we editing an entry
 		if ($this->EE->input->get_post('entry_id') != FALSE)
     	{
 
     		$entry_id = $this->EE->input->get_post('entry_id');
 
-    		foreach($this->data->available_widget_areas as $key => &$area)
+    		$this->data->widget_instances = $this->EE->entry_widget->list_area_instances(
+							   		$this->data->settings['area_slug'], 
+									$entry_id
+								);
+
+    		$i = 0;
+
+			foreach($this->data->widget_instances as $widget)
 			{
-					
-				$area->widgets = $this->EE->entry_widget->list_area_instances($area->slug, $entry_id);
+
+				$data = array();
+				$data['widget'] 		= (array) $this->EE->entry_widget->get_widget($widget->widget_id);
+				$data['widget_instance'] = (array) $this->EE->entry_widget->get_widget_instance($widget->instance_id);
+				$data['widget_area'] 	= (array) $this->EE->entry_widget->get_area( $widget->widget_area_id );
+				$data['field_name'] 	= $this->field_name;
+				$data['row_count']		= $i++;
+
+				$data['form'] = $this->EE->entry_widget->render_backend(
+					$widget->slug, 
+					isset($widget->options) ? $this->EE->entry_widget->unserialize_options($widget->options) : array(),
+					$this->field_name.'['.$data['row_count'].'][options]['.$widget->slug.']'
+				);
+
+				$this->data->widgets[] = $this->EE->load->view('field/add_instance', $data, TRUE);
+				
+				unset($data);
 			}
 
-			$i = 0;
-
-			foreach($this->data->available_widget_areas as $widget_area)
-			{
-				foreach($widget_area->widgets as $widget)
-				{
-					$data = array();
-					$data['widget'] 		= (array) $this->EE->entry_widget->get_widget($widget->widget_id);
-					$data['widget_instance'] = (array) $this->EE->entry_widget->get_widget_instance($widget->instance_id);
-					$data['widget_area'] 	= (array) $this->EE->entry_widget->get_area( $widget->widget_area_id );
-					$data['field_name'] 	= $this->field_name;
-					$data['row_count']		= $i++;
-
-					$data['form'] = $this->EE->entry_widget->render_backend(
-						$widget->slug, 
-						isset($widget->options) ? $this->EE->entry_widget->unserialize_options($widget->options) : array(),
-						$this->field_name.'['.$data['row_count'].'][options]['.$widget->slug.']'
-					);
-
-					$this->data->widgets[$widget_area->slug][] = $this->EE->load->view('field/add_instance', $data, TRUE);
-					unset($data);
-				}
-			}
+		
 		}
 
 		return $this->EE->load->view('field/index', $this->data, TRUE);
+	}
+
+
+	private function _add_widget_assets()
+	{
+		if (! isset($this->cache['assets_added']) )
+		{
+			$this->cache['assets_added'] = 1;
+
+			$this->EE->cp->add_to_head('
+				<script src="'.$this->asset_path.'/js/entry_widgets.js"></script>
+			');
+
+			$this->EE->cp->add_js_script('ui', 'sortable');
+		}
 	}
 
 	function post_save($data)

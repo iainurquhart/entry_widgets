@@ -33,6 +33,7 @@ class Entry_widgets_tab {
 		}
 
 		$this->EE->load->library('entry_widget');
+		$this->cache 	   =& $this->EE->session->cache['entry_widgets_data'];
 
 	}
 
@@ -42,90 +43,114 @@ class Entry_widgets_tab {
 	function publish_tabs($channel_id, $entry_id = '')
 	{
 
-		$settings[] = array(
-            'field_id' => 		'widget_data',
-            'field_label'       => 'Page Widgets',
-            'field_required'    => 'n',
-            'field_data'        => $entry_id,
-            'field_list_items'  => '',
-            'field_fmt'     => '',
-            'field_instructions'    => '',
-            'field_show_fmt'    => 'n',
-            'field_pre_populate'    => 'n',
-            'field_text_direction'  => 'ltr',
-            'field_type'        => 'entry_widgets',
-            'field_maxl'		=> '22'
-        );
+		$widget_areas 	= $this->EE->entry_widget->list_areas();
+
+		foreach ($widget_areas as $area) 
+		{
+			
+			$settings[] = array(
+				'field_id' => 		'widget_'.$area->slug,
+				'field_label'       => $area->title,
+				'field_required'    => 'n',
+				'field_data'        => $entry_id,
+				'field_list_items'  => '',
+				'field_fmt'     => '',
+				'field_instructions'    => '',
+				'field_show_fmt'    => 'n',
+				'field_pre_populate'    => 'n',
+				'field_text_direction'  => 'ltr',
+				'field_type'        => 'entry_widgets',
+				'field_maxl'		=> '22',
+				'field_settings'	=> array(
+					'area_id' 	=> $area->id,
+					'area_slug' => $area->slug
+				)
+			);
+        }
 
         return $settings;
 	}
 
+
+
 	function publish_data_db($params)
 	{
 
-
 		$entry_id = $params['entry_id'];
-		$widget_data = $params['mod_data']['widget_data'];
-		$instances = array();
 
-		// do we have widget data
-		if(!is_array($widget_data))
-		{
-			$this->EE->db->where('entry_id', $entry_id );
-			$this->EE->db->delete('entry_widget_instances');
-			return;
-		}
+		$widget_areas 	= $this->EE->entry_widget->list_areas();
 
-		// prune any instances not received
-		foreach($widget_data as $key => $widget)
+		foreach ($widget_areas as $area) 
 		{
-			// build our list of previous instance ids
-			if(isset($widget['instance_id']))
-			{
-				$instances[] = $widget['instance_id'];
-			}
-		}
 			
-		if($instances)
-		{
-			$this->EE->db->where_not_in('id', $instances);
-			$this->EE->db->delete('entry_widget_instances');
-		}
+			$widget_data = $params['mod_data']['widget_'.$area->slug];
+			
+			$instances = array();
 
-		// process new and update existing
-		foreach($widget_data as $key => $widget)
-		{
-
-			if( isset($widget['instance_id']) && $widget['instance_id'] != '') // editing an instance
+			// do we have widget data
+			if(!is_array($widget_data))
 			{
+				$this->EE->db->where('entry_id', $entry_id );
+				$this->EE->db->where('widget_area_id', $area->id );
+				$this->EE->db->delete('entry_widget_instances');
+				continue;
+			}
+
+			// prune any instances not received
+			foreach($widget_data as $key => $widget)
+			{
+				// build our list of previous instance ids
+				if(isset($widget['instance_id']))
+				{
+					$instances[] = $widget['instance_id'];
+				}
+			}
 				
-				$result = $this->EE->entry_widget->edit_instance(
-					$widget['instance_id'], // this should be widget_instance_id
-					$entry_id, 
-					$widget['widget_id'],
-					$widget['title'], 
-					$widget['widget_area_id'], 
-					$widget['options'],
-					$key
-				);
-
-			}
-			else
+			if($instances)
 			{
 
-				$result = $this->EE->entry_widget->add_instance( 
-					$entry_id, 
-					$widget['title'], 
-					$widget['widget_id'],
-					$widget['widget_area_id'], 
-					$widget['options'],
-					$key
-				);
-
+				$this->EE->db->where_not_in('id', $instances);
+				$this->EE->db->where('widget_area_id', $area->id );
+				$this->EE->db->delete('entry_widget_instances');
 			}
-			
-			
+
+			// process new and update existing
+			foreach($widget_data as $key => $widget)
+			{
+
+				if( isset($widget['instance_id']) && $widget['instance_id'] != '') // editing an instance
+				{
+					$result = $this->EE->entry_widget->edit_instance(
+						$widget['instance_id'], // this should be widget_instance_id
+						$entry_id, 
+						$widget['widget_id'],
+						$widget['title'], 
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+
+				}
+				else
+				{
+
+					$result = $this->EE->entry_widget->add_instance( 
+						$entry_id, 
+						$widget['title'], 
+						$widget['widget_id'],
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+
+				}
+	
+			}
+
 		}
+
+		
+		
 	}
 
 	/**
