@@ -7,7 +7,7 @@
  * Show RSS feeds in your site
  */
 
-class Widget_Rss_feed extends Entry_widgets
+class Widget_Rss_feed extends Entry_widget
 {
 	public $title = 'RSS Feed';
 	public $description = 'Display parsed RSS feeds on your websites.';

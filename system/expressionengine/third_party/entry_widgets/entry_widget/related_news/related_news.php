@@ -7,7 +7,7 @@
  * Show RSS feeds in your site
  */
 
-class Widget_Related_news extends Entry_widgets
+class Widget_Related_news extends Entry_widget
 {
 	public $title = 'Related News';
 	public $description = 'Display related news items.';
@@ -30,13 +30,11 @@ class Widget_Related_news extends Entry_widgets
 
 	public function run($options)
 	{
-		if(empty($options['html']))
-		{
-			return array('output' => '');
-		}
-		
+
 		// Store the feed items
-		return array('output' => $options['number']);
+		return array(
+			'output' => $options
+		);
 	}
 	
 	public function form($options)

@@ -1,9 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-include_once PATH_THIRD.'entry_widgets/libraries/Entry_widget'.EXT;
-
-class Entry_widgets extends Entry_widget {}
-
 
 class Entry_widgets_ft extends EE_Fieldtype {
 	

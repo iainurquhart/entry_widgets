@@ -19,7 +19,7 @@
 
 include_once PATH_THIRD.'entry_widgets/libraries/Entry_widget'.EXT;
 
-class Entry_widgets extends Entry_widget {}
+class My_entry_widgets extends Entry_widget {}
 
 class Entry_widgets_mcp {
 	

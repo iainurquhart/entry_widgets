@@ -7,7 +7,7 @@
  * Show RSS feeds in your site
  */
 
-class Widget_Html_data extends Entry_widgets
+class Widget_Html_data extends Entry_widget
 {
 	public $title = 'HTML';
 	public $description = 'Create blocks of custom HTML.';

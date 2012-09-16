@@ -17,9 +17,24 @@
 
 include_once PATH_THIRD.'entry_widgets/libraries/Entry_widget'.EXT;
 
+
+
 class Entry_widgets extends Entry_widget {
+
+
 	
 	public $return_data;
+
+	private $_rendered_areas = array();
+
+	private $_default_wrapper = '
+		<div class="widget {slug}">
+			<h3>{instance_title}</h3>
+
+			<div class="widget-body">
+			{body}
+			</div>
+		</div>';
 	
 	/**
 	 * Constructor
@@ -41,6 +56,36 @@ class Entry_widgets extends Entry_widget {
 		$widget->options['title'] = $widget->instance_title;
 
 		return $widget ? $this->EE->entry_widget->render($widget->slug, $widget->options) : '';
+	}
+
+	public function render()
+	{
+
+		$this->EE->load->model('entry_widgets_m');
+		$area = $this->EE->TMPL->fetch_param('area');
+		$entry_id = $this->EE->TMPL->fetch_param('entry_id');
+		$wrapper_html = $this->EE->TMPL->tagdata ? $this->EE->TMPL->tagdata : $this->_default_wrapper;
+
+		$key = $area.'|'.$entry_id;
+
+		if (isset($this->_rendered_areas[$key]))
+		{
+			return $this->_rendered_areas[$key];
+		}
+
+		$widgets = $this->EE->entry_widgets_m->get_by_area($area, $entry_id);
+
+		$output = '';
+
+		foreach ($widgets as &$widget)
+		{
+			$widget->options = $this->EE->entry_widget->unserialize_options( $widget->options );
+			$widget->options['title'] = $widget->instance_title;
+			$widget->body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
+			$output .= $this->EE->entry_widget->render($widget->slug, $widget->options);
+		}
+
+		return $this->_rendered_areas[$key] = $output;
 	}
 
 	
