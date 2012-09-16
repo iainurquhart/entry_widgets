@@ -13,16 +13,10 @@
  
 // ------------------------------------------------------------------------
 
-
-
 include_once PATH_THIRD.'entry_widgets/libraries/Entry_widget'.EXT;
-
-
 
 class Entry_widgets extends Entry_widget {
 
-
-	
 	public $return_data;
 
 	private $_rendered_areas = array();
@@ -76,6 +70,7 @@ class Entry_widgets extends Entry_widget {
 		$widgets = $this->EE->entry_widgets_m->get_by_area($area, $entry_id);
 
 		$output = '';
+		$variables = array();
 
 		foreach ($widgets as &$widget)
 		{
@@ -83,9 +78,16 @@ class Entry_widgets extends Entry_widget {
 			$widget->options['title'] = $widget->instance_title;
 			$widget->body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
 			$output .= $this->EE->entry_widget->render($widget->slug, $widget->options);
+			$variables[]['widgets'][] = (array) $widget;
 		}
 
-		return $this->_rendered_areas[$key] = $output;
+		$return = $this->EE->TMPL->parse_variables(
+			'{widgets}'.$wrapper_html.'{/widgets}',
+			$variables 
+		);
+
+		return $this->_rendered_areas[$key] = $return;
+
 	}
 
 	
