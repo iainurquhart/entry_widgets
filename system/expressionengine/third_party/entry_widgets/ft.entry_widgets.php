@@ -11,6 +11,24 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		'name'		=> 'Entry_widgets',
 		'version'	=> '1.0'
 	);
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * constructor
+	 * 
+	 * @access	public
+	 * @return	void
+	 */
+	public function __construct()
+	{
+		parent::EE_Fieldtype();
+
+		$this->site_id 		= $this->EE->config->item('site_id');
+		$this->asset_path 	= $this->EE->config->item('theme_folder_url').'third_party/entry_widgets/';
+		$this->drag_handle  = '&nbsp;';
+		$this->cache 	   =& $this->EE->session->cache['entry_widgets_data'];
+	}
 	
 	// --------------------------------------------------------------------
 	
@@ -26,6 +44,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	{
 
 		$this->EE->load->library('entry_widget');
+		$this->EE->cp->add_js_script('ui', 'sortable');
 
 		$this->data->available_widgets = array();
 
@@ -41,49 +60,59 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 		$this->data->field_name = $this->field_name;
 
+		$this->data->widgets = '';
+
 
 		if($data) // if something on the publish page fails to validate, we've got access to our data
 		{
 			// print_r($data);
 		}
 
+
+
 		// are we editing an entry
 		if ($this->EE->input->get_post('entry_id') != FALSE)
     	{
-    		foreach($this->data->available_widget_areas as &$area)
+
+    		$entry_id = $this->EE->input->get_post('entry_id');
+
+    		foreach($this->data->available_widget_areas as $key => &$area)
 			{
-				$area->widgets = $this->EE->entry_widget->list_area_instances($area->slug);
+					
+				$area->widgets = $this->EE->entry_widget->list_area_instances($area->slug, $entry_id);
+			}
 
+			$i = 0;
 
-				foreach($area->widgets as $widget)
+			foreach($this->data->available_widget_areas as $widget_area)
+			{
+				foreach($widget_area->widgets as $widget)
 				{
-
 					$data = array();
-
-					$data['widget'] 		= (array) $this->EE->entry_widget->get_widget($widget->id);
+					$data['widget'] 		= (array) $this->EE->entry_widget->get_widget($widget->widget_id);
+					$data['widget_instance'] = (array) $this->EE->entry_widget->get_widget_instance($widget->instance_id);
 					$data['widget_area'] 	= (array) $this->EE->entry_widget->get_area( $widget->widget_area_id );
 					$data['field_name'] 	= $this->field_name;
+					$data['row_count']		= $i++;
 
 					$data['form'] = $this->EE->entry_widget->render_backend(
-						$widget->widget_area_slug, 
-						isset($widget->options) ? $widget->options : array(),
-						$this->field_name.'[0][options]['.$widget->widget_area_slug.']'
+						$widget->slug, 
+						isset($widget->options) ? $this->EE->entry_widget->unserialize_options($widget->options) : array(),
+						$this->field_name.'['.$data['row_count'].'][options]['.$widget->slug.']'
 					);
 
-					// $data['view'] = $this->EE->load->view('field/test_view', $data, TRUE);
-					$data['view'] = $this->EE->load->view('field/add_instance', $data, TRUE);
-					
-					print_r($this->data->available_widget_areas);
+					$this->data->widgets[$widget_area->slug][] = $this->EE->load->view('field/add_instance', $data, TRUE);
+					unset($data);
 				}
 			}
 		}
 
-
-
-
-		
-
 		return $this->EE->load->view('field/index', $this->data, TRUE);
+	}
+
+	function post_save($data)
+	{
+
 	}
 	
 	// --------------------------------------------------------------------

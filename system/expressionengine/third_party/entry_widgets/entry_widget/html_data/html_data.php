@@ -7,7 +7,7 @@
  * Show RSS feeds in your site
  */
 
-class Widget_Html extends Entry_widgets
+class Widget_Html_data extends Entry_widgets
 {
 	public $title = 'HTML';
 	public $description = 'Create blocks of custom HTML.';
@@ -17,7 +17,7 @@ class Widget_Html extends Entry_widgets
 	
 	public $fields = array(
 		array(
-			'field'   => 'html',
+			'field'   => 'html_data',
 			'label'   => 'HTML',
 			'rules'   => 'required'
 		)
@@ -25,13 +25,13 @@ class Widget_Html extends Entry_widgets
 
 	public function run($options)
 	{
-		if(empty($options['html']))
+		if(empty($options['html_data']))
 		{
 			return array('output' => '');
 		}
 		
 		// Store the feed items
-		return array('output' => $options['html']);
+		return array('output' => $options['html_data']);
 	}
 	
 }

@@ -4,7 +4,7 @@
 		<?php 
 			echo form_textarea(array(
 				'name'  => $field_name,
-				'value' => $options['html'])
+				'value' => $options['html_data'])
 			); 
 		?>
 	</li>

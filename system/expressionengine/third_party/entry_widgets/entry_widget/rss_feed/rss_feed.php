@@ -18,8 +18,7 @@ class Widget_Rss_feed extends Entry_widgets
 	public $fields = array(
 		array(
 			'field'   => 'feed_url',
-			'label'   => 'Feed URL',
-			'rules'   => 'required'
+			'label'   => 'Feed URL'
 		),
 		array(
 			'field'   => 'date_format',
@@ -75,9 +74,9 @@ class Widget_Rss_feed extends Entry_widgets
 	
 	public function save($options)
 	{
-		$this->load->helper('url');
-		
-		$options['feed_url'] = prep_url($options['feed_url']);
+		$this->EE->load->helper('url');
+
+		$options['feed_url'] = prep_url($options['rss_feed']['feed_url']);
 		
 		return $options;
 	}

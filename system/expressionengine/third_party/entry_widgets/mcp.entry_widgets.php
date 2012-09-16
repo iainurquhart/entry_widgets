@@ -65,18 +65,25 @@ class Entry_widgets_mcp {
 	private function _add_instance($ajax = TRUE)
 	{
 		
-		$widget_id 		= $this->EE->input->get_post('widget_id');
+		$widget_id 		= (int) $this->EE->input->get_post('widget_id');
 		$widget_area_id = $this->EE->input->get_post('widget_area_id');
 		$field_name 	= $this->EE->input->get_post('field_name');
 
 		$data = array();
 
 		$data['widget'] 		= (array) $this->EE->entry_widget->get_widget($widget_id);
+
+		// getting a widget as opposed to a widget instance.
+		$data['widget']['widget_id'] = $data['widget']['id'];
+		unset($data['widget']['id']);
+
 		$data['widget_area'] 	= (array) $this->EE->entry_widget->get_area( $widget_area_id );
 		$data['widget_areas'] 	= array();
 		$data['field_name'] 	= $field_name;
 		
 		$widget_areas 	= (array) $this->EE->entry_widget->list_areas();
+
+
 
 		foreach($widget_areas as $area)
 		{

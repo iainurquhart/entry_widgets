@@ -26,7 +26,8 @@
 		    });
 		};
 
-		$('.add-widget-button').click( function(e) {
+		$("body").delegate(".add-widget-button", "click", function(e) {
+
 
 			var area_id = $(this).parent().data('area-id');
 
@@ -40,8 +41,8 @@
 			e.preventDefault();
 
 		});
-
-		$('ul.entry_widget_list a').click( function(e) {
+		
+		$("body").delegate("ul.entry_widget_list a", "click", function(e) {
 
 			var widget_id = $(this).data('widget-id');
 			var widget_area_id = $(this).data('area-id');
@@ -58,6 +59,34 @@
 			e.preventDefault();
 		});
 
+
+		$("body").delegate("a.widget-delete", "click", function(e) {
+    		
+    		if(confirm('Are you sure you want to delete this Widget?')){
+	    		$(this).closest('div.entry_widget').slideUp('slow', function() {
+				    $(this).remove();
+				    $('.entry_widget_areas').updateWidgetIndexes();
+				});
+			}else{
+				return false;
+			};
+    		e.preventDefault();
+    	});
+
+    	$(".entry_widget_data").sortable({
+			handle: 'table',
+			start: function(e, ui){
+		        ui.placeholder.height(ui.item.height());
+		    },
+			cursor: 'move',
+			placeholder: "widget_placeholder",
+			items: ".entry_widget",
+			update: function(event, ui) { 
+				$('.entry_widget_areas').updateWidgetIndexes(); 
+			}
+		});
+
+
 	});
 </script>
 
@@ -69,11 +98,11 @@
 		padding:0;
 	}
 	#mainContent ul.entry_widget_areas li.widget-area-wrapper {
-		padding: 10px;
+		padding: 10px 15px;
 		background: rgba(255,255,255, 0.8);
 		margin: 10px 0 ;
 		border-radius: 5px;
-		border: 1px solid #fff;
+		border: 1px solid rgba(0,0,0,0.15);
 	}
 	#mainContent li.widget-area-wrapper h3 {
 		margin: 0; 
@@ -91,35 +120,91 @@
 		padding-bottom: 10px;
 	}
 	#mainContent button.add-widget-button {
-	color: #050505;
-	padding: 5px 10px;
-	margin: 10px 0;
+		color: #050505;
+		padding: 5px 10px;
+		margin: 10px 0;
+		background: -moz-linear-gradient(
+			top,
+			#ffffff 0%,
+			#ebebeb 50%,
+			#dbdbdb 50%,
+			#b5b5b5);
+		background: -webkit-gradient(
+			linear, left top, left bottom, 
+			from(#ffffff),
+			color-stop(0.50, #ebebeb),
+			color-stop(0.50, #dbdbdb),
+			to(#b5b5b5));
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		border-radius: 10px;
+		border: 1px solid #949494;
+		-moz-box-shadow:
+			inset 0px 0px 2px rgba(255,255,255,1);
+		-webkit-box-shadow:
+			inset 0px 0px 2px rgba(255,255,255,1);
+		box-shadow:
+			inset 0px 0px 2px rgba(255,255,255,1);
+		text-shadow:
+			0px -1px 0px rgba(000,000,000,0.2),
+			0px 1px 0px rgba(255,255,255,1);
+	}
+	.entry_widget {
+		padding: 10px 0px 0px 0px;
+		margin-bottom: 10px;
+	}
+	.entry_widget table {
+		box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+		border-radius: 3px;
+	}
+	.entry_widget_list * {
+		outline:none;
+	}
+	#mainContent ul.entry_widget_areas th {
+		font-size: 14px; line-height: 17px;
+		height: 20px; vertical-align: middle;
+		padding: 8px 10px;
+	}
+	#mainContent ul.entry_widget_areas a.widget-delete {
+		float: right;
+		text-decoration: none;
+		background: #d91350 ;
+		color: #fff;
+		display: inline-block;
+		width: 22px; height: 22px; text-align: center;
+		line-height: 20px;
+		margin: -2px 0 -5px 0;
+
 	background: -moz-linear-gradient(
 		top,
-		#ffffff 0%,
-		#ebebeb 50%,
-		#dbdbdb 50%,
-		#b5b5b5);
+		#ff0000 0%,
+		#400808);
 	background: -webkit-gradient(
 		linear, left top, left bottom, 
-		from(#ffffff),
-		color-stop(0.50, #ebebeb),
-		color-stop(0.50, #dbdbdb),
-		to(#b5b5b5));
+		from(#ff0000),
+		to(#400808));
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	border: 1px solid #949494;
 	-moz-box-shadow:
-		inset 0px 0px 2px rgba(255,255,255,1);
+		0px 1px 3px rgba(0,0,0,0.3),
+		inset 0px 0px 1px rgba(0,0,0,0.3);
 	-webkit-box-shadow:
-		inset 0px 0px 2px rgba(255,255,255,1);
+		0px 1px 3px rgba(0,0,0,0.3),
+		inset 0px 0px 1px rgba(0,0,0,0.3);
 	box-shadow:
-		inset 0px 0px 2px rgba(255,255,255,1);
+		0px 1px 3px rgba(0,0,0,0.3),
+		inset 0px 0px 1px rgba(0,0,0,0.3);
 	text-shadow:
-		0px -1px 0px rgba(000,000,000,0.2),
-		0px 1px 0px rgba(255,255,255,1);
-}
+		0px -1px 0px rgba(000,000,000,0.4),
+		0px 1px 0px rgba(255,255,255,0.3);
+	}
+	#mainContent .widget_placeholder {
+		background: rgba(0,0,0,0.3);
+		box-shadow: 0 0 15px rgba(0,0,0,0.3);
+		margin: 0px 0;
+		padding: 10px;
+	}
 </style>
 
 
@@ -143,13 +228,13 @@
 		<div class="entry_widget_data" id="widget-area-<?= $widget_areas->id ?>">
 
 			<?php 
-				if( isset($widget_areas->widgets) ):
-				foreach($widget_areas->widgets as $widget):
-
-					echo $widget->id;
-
-				endforeach;
-				endif; 
+				if(isset($widgets[$widget_areas->slug]))
+				{
+					foreach( $widgets[$widget_areas->slug] as $widget)
+					{
+						echo $widget;
+					}
+				}
 			?>
 		</div>
 	</li>

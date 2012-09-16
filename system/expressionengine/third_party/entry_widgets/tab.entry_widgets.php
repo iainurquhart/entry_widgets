@@ -18,9 +18,6 @@
  */
 
 class Entry_widgets_tab {
-
-	// our array of field ids, set in config
-	var $field_ids = array();
 	
 	/**
 	 * Constructor
@@ -49,7 +46,7 @@ class Entry_widgets_tab {
             'field_id' => 		'widget_data',
             'field_label'       => 'Page Widgets',
             'field_required'    => 'n',
-            'field_data'        => '',
+            'field_data'        => $entry_id,
             'field_list_items'  => '',
             'field_fmt'     => '',
             'field_instructions'    => '',
@@ -66,33 +63,63 @@ class Entry_widgets_tab {
 	function publish_data_db($params)
 	{
 
-		$entry_id = $params['data']['entry_id'];
-		$widget_data = $params['mod_data']['widget_data'];
 
+		$entry_id = $params['entry_id'];
+		$widget_data = $params['mod_data']['widget_data'];
+		$instances = array();
+
+		// do we have widget data
+		if(!is_array($widget_data))
+		{
+			$this->EE->db->where('entry_id', $entry_id );
+			$this->EE->db->delete('entry_widget_instances');
+			return;
+		}
+
+		// prune any instances not received
+		foreach($widget_data as $key => $widget)
+		{
+			// build our list of previous instance ids
+			if(isset($widget['instance_id']))
+			{
+				$instances[] = $widget['instance_id'];
+			}
+		}
+			
+		if($instances)
+		{
+			$this->EE->db->where_not_in('id', $instances);
+			$this->EE->db->delete('entry_widget_instances');
+		}
+
+		// process new and update existing
 		foreach($widget_data as $key => $widget)
 		{
 
-
-
 			if( isset($widget['instance_id']) && $widget['instance_id'] != '') // editing an instance
 			{
+				
 				$result = $this->EE->entry_widget->edit_instance(
-					$widget['instance_id'], 
+					$widget['instance_id'], // this should be widget_instance_id
 					$entry_id, 
+					$widget['widget_id'],
 					$widget['title'], 
 					$widget['widget_area_id'], 
-					$widget['options']
+					$widget['options'],
+					$key
 				);
-				
+
 			}
 			else
 			{
+
 				$result = $this->EE->entry_widget->add_instance( 
 					$entry_id, 
 					$widget['title'], 
 					$widget['widget_id'],
 					$widget['widget_area_id'], 
-					$widget['options']
+					$widget['options'],
+					$key
 				);
 
 			}
@@ -108,7 +135,7 @@ class Entry_widgets_tab {
 	function validate_publish($params)
 	{
 
-	    // print_r($params);
+	    
 
 	}
 

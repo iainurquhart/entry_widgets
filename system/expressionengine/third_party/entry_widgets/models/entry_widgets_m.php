@@ -32,8 +32,17 @@ class Entry_widgets_m
 		return $this->EE->db->insert_id();
 	}
 
+	public function get_widget_instance_by($field, $id)
+	{
+		return $this->EE->db
+			->where($field, $id)
+			->get('entry_widget_instances')
+			->row();
+	}
+
 	public function get_widget_by($field, $id)
 	{
+
 		return $this->EE->db
 			->where($field, $id)
 			->get('entry_widgets')
@@ -76,7 +85,7 @@ class Entry_widgets_m
 			'widget_id'  => $input['widget_id'],
 			'widget_area_id' => $input['widget_area_id'],
 			'options' 	 => $input['options'],
-			'`order`' 	 => $order,
+			'`order`' 	 => $input['order'],
 			'created_on' => now(),
 			'updated_on' => now(),
 			'site_id' 	 => $this->site_id
@@ -86,15 +95,38 @@ class Entry_widgets_m
 	}
 
 
-	function get_by_area($slug)
+	public function update_instance($instance_id, $input, $key)
 	{
-		$this->EE->db->select('wi.id, w.slug, wi.id as instance_id, wi.title as instance_title, w.title, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
+		$this->EE->db->where('id', $instance_id);
+		$this->EE->db->where('site_id', $this->site_id);
+		
+		return $this->EE->db->update(
+			'entry_widget_instances', 
+			array(
+    			'title' => $input['title'],
+				'widget_area_id' => $input['widget_area_id'],
+				'options' => $input['options'],
+				'order' => $key
+			)
+		);
+	}
+
+
+	function get_by_area($slug, $entry_id = '')
+	{
+		$this->EE->db->select('wi.id, w.slug, wi.id as instance_id, wi.widget_id, wi.title as instance_title, w.title, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
 			->from('entry_widget_areas wa')
 			->join('entry_widget_instances wi', 'wa.id = wi.widget_area_id')
 			->join('entry_widgets w', 'wi.widget_id = w.id')
 			->where('wa.slug', $slug)
-			->where('wi.site_id', $this->site_id)
-			->order_by('wi.order');
+			->where('wi.site_id', $this->site_id);
+
+		if($entry_id)
+		{
+			$this->EE->db->where('wi.entry_id', $entry_id);
+		}
+
+		$this->EE->db->order_by('wi.order');
 
 		return $this->EE->db->get()->result();
 	}
