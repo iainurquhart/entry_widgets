@@ -13,11 +13,11 @@
  
 // ------------------------------------------------------------------------
 
-/**
- * Global Fields Module Front End File
- */
 
-class Entry_widgets {
+
+include_once PATH_THIRD.'entry_widgets/libraries/Entry_widget'.EXT;
+
+class Entry_widgets extends Entry_widget {
 	
 	public $return_data;
 	
@@ -26,14 +26,23 @@ class Entry_widgets {
 	 */
 	public function __construct()
 	{
-		$this->EE =& get_instance();
+		parent::__construct();
+		$this->EE->load->library('entry_widget');
 	}
 	
 	// ----------------------------------------------------------------
 
-	/**
-	 * Nothing here yet.
-	 */
+	public function instance()
+	{
+		$id = $this->EE->TMPL->fetch_param('id');
+		
+		$widget = $this->EE->entry_widget->get_instance($id, TRUE);
+
+		$widget->options['title'] = $widget->instance_title;
+
+		return $widget ? $this->EE->entry_widget->render($widget->slug, $widget->options) : '';
+	}
+
 	
 }
 /* End of file mod.entry_widgets.php */

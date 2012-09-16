@@ -425,6 +425,48 @@ $widget['instance_id'], // this should be widget_instance_id
 
 
 
+	function get_instance($instance_id)
+	{
+		$widget = $this->EE->entry_widgets_m->get_instance($instance_id);
+
+		if ($widget)
+		{
+			$widget->options = $this->unserialize_options($widget->options);
+			return $widget;
+		}
+
+		return FALSE;
+	}
+
+
+
+	function render($name, $options = array())
+    {
+    	$this->_spawn_widget($name);
+
+        $data = method_exists($this->_widget, 'run')
+			? call_user_func(array($this->_widget, 'run'), $options)
+			: array();
+
+		// Don't run this widget
+		if ($data === FALSE)
+		{
+			return FALSE;
+		}
+
+		// If we have TRUE, just make an empty array
+		$data !== TRUE OR $data = array();
+
+		// convert to array
+		is_array($data) OR $data = (array) $data;
+
+		$data['options'] = $options;
+
+		return $this->load_view('display', $data);
+    }
+
+
+
 
 
 

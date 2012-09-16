@@ -31,7 +31,10 @@ class Widget_Html_data extends Entry_widgets
 		}
 		
 		// Store the feed items
-		return array('output' => $options['html_data']);
+		return array(
+			'output' => $options['html_data'],
+			'title' => $options['title']
+		);
 	}
 	
 }

@@ -145,4 +145,18 @@ class Entry_widgets_m
 		return $this->EE->db->insert_id();
 	}
 
+
+
+	function get_instance($id)
+	{
+		$this->EE->db->select('w.id, w.slug, wi.id as instance_id, wi.title as instance_title, w.title, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
+			->from('entry_widget_areas wa')
+			->join('entry_widget_instances wi', 'wa.id = wi.widget_area_id')
+			->join('entry_widgets w', 'wi.widget_id = w.id')
+			->where('wi.site_id', $this->site_id)
+			->where('wi.id', $id);
+
+		return $this->EE->db->get()->row();
+	}
+
 }
