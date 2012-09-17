@@ -1,5 +1,7 @@
 # Entry Widgets for ExpressionEngine 2
 
+![Example Widget Publish Page](http://cl.ly/image/39081S432Q0B)
+
 NOTE: this add-on is not production ready and is open for developer review/discussion.
 
 ## Overview
@@ -7,6 +9,11 @@ NOTE: this add-on is not production ready and is open for developer review/discu
 Entry Widgets is a sideways port of Phil Sturgeon's recently open sourced Widget Module.
 
 The fundamental difference between the Entry Widgets Module and the Widgets Module is as the name suggests - widgets are associated with regions within entries, rather than just regions.
+
+1. You have widgets:
+  Eg, Latest Tweets, Latest News, Featured Products
+2. You have Areas & Entries
+3. You now have available instances of Widgets (with user defined parameters), within Areas, associated with Entries
 
 The add-on is being developed to fill the need of having user defined parameters for 'features' around a page. For example, Entry Widgets enables a publisher to output something like this using the "related entries widget":
 
@@ -52,6 +59,10 @@ To output your widgets, you can use the following as an example
 
 	{/exp:channel:entries}
 
-The body variable, will render whatever is defined by the widget's display method. Each widget is located within the 'entry_widget' directory and there are two examples for devs to review.
+The {body} variable, will render whatever is defined by the widget's display method. Each widget is located within the 'entry_widget' directory and there are two examples for devs to review.
 
 The related_entries widget should be a good example of what is possible with widgets, in particular - review the display.php view.
+
+Yep, there's a channel entries tag in there, with widget values as parameters and it renders fine.
+
+Enjoy.
