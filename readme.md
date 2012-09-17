@@ -2,28 +2,27 @@
 
 NOTE: this add-on is not production ready and is open for developer review/discussion.
 
-### Overview
+## Overview
 
 Entry Widgets is a sideways port of Phil Sturgeon's recently open sourced Widget Module.
 
-The fundamental differemce between the Entry Widgets Module and the Widgets Module is as the name suggests - widgets are associated with regions within entries, rather than just regions.
+The fundamental difference between the Entry Widgets Module and the Widgets Module is as the name suggests - widgets are associated with regions within entries, rather than just regions.
 
-The add-on is being developed to fill the need of having user defined parameters for 'features' around a page. For example, Entry Widgets enables a publisher to output something like this using the "related entries widget"
+The add-on is being developed to fill the need of having user defined parameters for 'features' around a page. For example, Entry Widgets enables a publisher to output something like this using the "related entries widget":
 
-A publisher can do things like this: 
-Add a widget which shows 3 entries from News Channel, give the feature a title of "Recent News".
-Also show another feature, with 5 entries from Products Channel, give it a title "New Products".
+  * Add a widget which shows 3 entries from News Channel, give the feature a title of "Recent News".
+  * Also show another feature, with 5 entries from Products Channel, give it a title "New Products".
 
 You get the idea.
 
-### Usage
+## Usage
 
-#### Installation
+### Installation
 Add the files as per any regular EE add-on, and enable the Module &amp; Fieldtype.
 
 NOTE: While the fieldtype is installed, it's used by the Tab file - meaning you should not add the Entry Widget fieldtype to any Channel Field Groups. The nature of Tabs are they add themselves to all channels, and utilise installed fields.
 
-#### Configuration
+### Configuration
 
 Visit the module interface and add an Area. An area consists of a title and a short name - much like channels do. Create an initial area such as "Sidebar Features" and give it the short name "sidebar".
 
