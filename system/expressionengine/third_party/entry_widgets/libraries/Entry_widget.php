@@ -246,6 +246,7 @@ class Entry_widget
 		// Check for default data if there is any
 		$data = method_exists($this->_widget, 'form') ? call_user_func(array(&$this->_widget, 'form'), $options) : array();
 		$data['field_name'] = $name_atribute;
+		$data['slug'] = $name;
 
 		// Options we'rent changed, lets use the defaults
 		isset($data['options']) OR $data['options'] = $options;
