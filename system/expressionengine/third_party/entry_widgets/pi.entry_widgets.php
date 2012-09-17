@@ -69,7 +69,10 @@ class Entry_widgets extends Entry_widget {
 
 		$widgets = $this->EE->entry_widgets_m->get_by_area($area, $entry_id);
 
-		$output = '';
+		if(!$widgets)
+			return $this->EE->TMPL->no_results();
+
+		// $output = '';
 		$variables = array();
 
 		foreach ($widgets as &$widget)
@@ -77,7 +80,7 @@ class Entry_widgets extends Entry_widget {
 			$widget->options = $this->EE->entry_widget->unserialize_options( $widget->options );
 			$widget->options['title'] = $widget->instance_title;
 			$widget->body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
-			$output .= $this->EE->entry_widget->render($widget->slug, $widget->options);
+			// $output .= $this->EE->entry_widget->render($widget->slug, $widget->options);
 			$variables[]['widgets'][] = (array) $widget;
 		}
 
