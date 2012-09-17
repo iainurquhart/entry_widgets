@@ -121,7 +121,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 				$data['form'] = $this->EE->entry_widget->render_backend(
 					$widget->slug, 
 					isset($widget->options) ? $this->EE->entry_widget->unserialize_options($widget->options) : array(),
-					$this->field_name.'['.$data['row_count'].'][options]['.$widget->slug.']'
+					$this->field_name.'['.$data['row_count'].'][options]'
 				);
 
 				$this->data->widgets[] = $this->EE->load->view('field/add_instance', $data, TRUE);
