@@ -51,7 +51,7 @@
 	}
 	else
 	{
-		echo lang('no_trees_assigned');
+		echo lang('no_areas_defined');
 	}
 
 
