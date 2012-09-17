@@ -1,12 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Global Fields for ExpressionEngine 2
+ * Entry Widgets for ExpressionEngine 2
  *
  * @package		ExpressionEngine
  * @subpackage	Modules
  * @category	Tab
  * @author    	Iain Urquhart <shout@iain.co.nz>
+ * @author    	Phil Sturgeon - who wrote the original widgets module: https://github.com/philsturgeon/ee2-widgets
  * @copyright 	Copyright (c) 2012 Iain Urquhart
  * @license   	All Rights Reserved
 */
@@ -16,10 +17,6 @@
 /**
  * Global Fields Module Control Panel File
  */
-
-include_once PATH_THIRD.'entry_widgets/libraries/Entry_widget'.EXT;
-
-class My_entry_widgets extends Entry_widget {}
 
 class Entry_widgets_mcp {
 	
@@ -83,10 +80,14 @@ class Entry_widgets_mcp {
 
 	}
 
-
 	function ajax_add_instance()
 	{
 		return $this->_add_instance(TRUE);
+	}
+
+	function add_instance()
+	{
+		return $this->_add_instance(FALSE);
 	}
 
 	private function _add_instance($ajax = TRUE)
@@ -110,8 +111,6 @@ class Entry_widgets_mcp {
 		
 		$widget_areas 	= (array) $this->EE->entry_widget->list_areas();
 
-
-
 		foreach($widget_areas as $area)
 		{
 			$data['widget_areas'][$area->id] = $area->title;
@@ -120,13 +119,16 @@ class Entry_widgets_mcp {
 		$data['form'] = $this->EE->entry_widget->render_backend(
 			$data['widget']['slug'], 
 			isset($data['widget']['options']) ? $data['widget']['options'] : array(),
-			$field_name.'[0][options]['.$data['widget']['slug'].']'
+			$field_name.'[0][options]'
 		);
 
-		// $data['view'] = $this->EE->load->view('field/test_view', $data, TRUE);
 		$data['view'] = $this->EE->load->view('field/add_instance', $data, TRUE);
 
-		$this->EE->output->send_ajax_response($data);
+		if($ajax)
+			$this->EE->output->send_ajax_response($data);
+		else
+			return $data['view'];
+
 	}
 
 

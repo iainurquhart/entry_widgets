@@ -1,5 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Entry Widgets Fieldtype for ExpressionEngine 2
+ *
+ * @package		ExpressionEngine
+ * @subpackage	Modules
+ * @category	Fieldtype
+ * @author    	Iain Urquhart <shout@iain.co.nz>
+ * @author    	Phil Sturgeon - who wrote the original widgets module: https://github.com/philsturgeon/ee2-widgets
+ * @copyright 	Copyright (c) 2012 Iain Urquhart
+ * @license   	All Rights Reserved
+*/
+ 
+// ------------------------------------------------------------------------
 
 class Entry_widgets_ft extends EE_Fieldtype {
 	
@@ -39,6 +52,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	function display_field($data)
 	{
 
+
 		$this->EE->load->library('entry_widget');
 		$this->_add_widget_assets();
 		$i = 0;
@@ -77,7 +91,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 				$w_data['form'] = $this->EE->entry_widget->render_backend(
 					$w_data['widget']['slug'], 
 					isset($w_data['widget_instance']['options']) ? $w_data['widget_instance']['options'] : array(),
-					$this->field_name.'['.$w_data['row_count'].'][options]['.$w_data['widget']['slug'].']'
+					$this->field_name.'['.$w_data['row_count'].'][options]'
 				);
 
 

@@ -1,15 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Entry widgets for ExpressionEngine 2
+ * Entry Widgets Fieldtype for ExpressionEngine 2
  *
  * @package		ExpressionEngine
  * @subpackage	Modules
- * @category	Tab
+ * @category	Updater/Installer
  * @author    	Iain Urquhart <shout@iain.co.nz>
+ * @author    	Phil Sturgeon - who wrote the original widgets module: https://github.com/philsturgeon/ee2-widgets
  * @copyright 	Copyright (c) 2012 Iain Urquhart
  * @license   	All Rights Reserved
 */
+ 
  
 // ------------------------------------------------------------------------
 

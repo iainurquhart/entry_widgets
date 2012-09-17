@@ -1,15 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Global Fields for ExpressionEngine 2
+ * Entry Widgets Fieldtype for ExpressionEngine 2
  *
  * @package		ExpressionEngine
- * @subpackage	Modules
- * @category	Tab
+ * @subpackage	Module
+ * @category	Plugin
  * @author    	Iain Urquhart <shout@iain.co.nz>
+ * @author    	Phil Sturgeon - who wrote the original widgets module: https://github.com/philsturgeon/ee2-widgets
  * @copyright 	Copyright (c) 2012 Iain Urquhart
  * @license   	All Rights Reserved
 */
+ 
  
 // ------------------------------------------------------------------------
 
@@ -51,6 +53,8 @@ class Entry_widgets extends Entry_widget {
 
 		return $widget ? $this->EE->entry_widget->render($widget->slug, $widget->options) : '';
 	}
+
+	// ----------------------------------------------------------------
 
 	public function render()
 	{
