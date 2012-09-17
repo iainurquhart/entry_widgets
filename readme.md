@@ -61,7 +61,7 @@ To output your widgets, you can use the following as an example
 
 The {body} variable, will render whatever is defined by the widget's display method. Each widget is located within the 'entry_widget' directory and there are two examples for devs to review.
 
-The related_entries widget should be a good example of what is possible with widgets, in particular - review the display.php view.
+The [Related Entries](https://github.com/iainurquhart/entry_widgets/tree/master/system/expressionengine/third_party/entry_widgets/entry_widget/related_entries) widget should be a good example of what is possible with widgets, in particular - review the [display.php](https://github.com/iainurquhart/entry_widgets/blob/master/system/expressionengine/third_party/entry_widgets/entry_widget/related_entries/views/display.php) view.
 
 Yep, there's a channel entries tag in there, with widget values as parameters and it renders fine.
 
