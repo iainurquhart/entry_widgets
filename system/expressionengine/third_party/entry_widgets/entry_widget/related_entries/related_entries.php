@@ -30,21 +30,17 @@ class Widget_Related_entries extends Entry_widget
 
 	public function run($options)
 	{
-		
 		$limit 		= (isset($options['limit'])) ? $options['limit'] : 0;
 		$channel_id = (isset($options['channel_id'])) ? $options['channel_id'] : 0;
 
 		return array(
-			'number' 	 => $limit,
+			'limit' 	 => $limit,
 			'channel_id' => $channel_id,
 		);
 	}
-
-
 	
 	public function form($options)
 	{
-			
 		
 		$this->EE->load->model('channel_model');
 		$channels = $this->EE->channel_model->get_channels()->result_array();
