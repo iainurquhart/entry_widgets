@@ -71,10 +71,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->data->field_name = $this->field_name;
 		$this->data->widgets = '';
 
-
-		// @todo - work on displaying widgets if something else on the publish page
-		// fails to validate.
-		// subsequent failures cause errors atm.
 		if(is_array($data)) // if something on the publish page fails to validate, we've got access to our data
 		{
 
@@ -94,9 +90,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 					$this->field_name.'['.$w_data['row_count'].'][options]'
 				);
 
-
 				array_walk_recursive($w_data, array($this, '_filter'));
-
 
 				$this->data->widgets[] = $this->EE->load->view('field/add_instance', $w_data, TRUE);
 

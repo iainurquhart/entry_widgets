@@ -68,11 +68,12 @@ class Entry_widgets_mcp {
 
 		if($_POST)
 		{
+			$w_data->widget_area->title = $this->EE->input->get_post('area_title');
+			$w_data->widget_area->slug = $this->EE->input->get_post('area_slug');
+			$w_data->widget_area->show_shortcode = $this->EE->input->get_post('show_shortcode');
 
-			$w_data->widget_area->title 	= $this->EE->input->get_post('area_title');
-			$w_data->widget_area->slug 	= $this->EE->input->get_post('area_slug');
-		
-			$w_data->widget_area->id 		= $this->EE->entry_widget->add_area( $w_data->widget_area );
+			$w_data->widget_area->id = $this->EE->entry_widget->add_area( $w_data->widget_area );
+			
 			$this->EE->functions->redirect($this->_base_url);
 		}
 

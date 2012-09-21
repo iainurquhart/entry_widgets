@@ -73,6 +73,7 @@ class Entry_widgets_upd {
 		  `slug` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
 		  `title` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
 		  `site_id` int(11) NOT NULL DEFAULT 0,
+		  `show_shortcode` int(1) NOT NULL DEFAULT 0,
 		  PRIMARY KEY (`id`),
 		  UNIQUE KEY `unique_slug` (`slug`)
 		)');

@@ -19,6 +19,10 @@
 			form_input('area_slug')
 		);
 	$this->table->add_row(
+			lang('show_shortcode'),
+			form_checkbox('show_shortcode')
+		);
+	$this->table->add_row(
 			'',
 			form_submit('mysubmit', 'Add Widget Area')
 		);

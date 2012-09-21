@@ -139,6 +139,7 @@ class Entry_widgets_m
 		$this->EE->db->insert('entry_widget_areas', array(
 			'title' => $input['title'],
 			'slug' 	=> $input['slug'],
+			'show_shortcode' 	=> $input['show_shortcode'],
 			'site_id' => $this->site_id
 		));
 

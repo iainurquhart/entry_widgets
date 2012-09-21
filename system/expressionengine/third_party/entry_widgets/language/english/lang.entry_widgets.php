@@ -16,6 +16,7 @@ $lang = array(
 	'area_slug' => 'Short Name<br />single word, no spaces',
 	'add_widget_area_instructions' => '<strong>Widgets have to live somewhere, define some areas for your widgets to live.</strong><br />Each area defined here will appear as a new widget field on publish pages',
 	'no_areas_defined' => 'There are no widget areas defined yet',
+	'show_shortcode' => 'Show shortcode key on widget'
 );
 
 /* End of file lang.global_fields.php */
