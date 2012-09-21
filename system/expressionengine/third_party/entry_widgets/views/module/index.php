@@ -20,7 +20,7 @@
 		);
 	$this->table->add_row(
 			lang('show_shortcode'),
-			form_checkbox('show_shortcode')
+			form_checkbox('show_shortcode', 1)
 		);
 	$this->table->add_row(
 			'',

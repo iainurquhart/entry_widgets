@@ -10,11 +10,16 @@ $(function() {
 		                var fieldName = $field.attr('name').replace(regex, '$1[' + rowCount + ']$2');
 		                $field.attr('name', fieldName);
 		            }
-		            if ($field.attr('class') == 'panel-count') {
-		            	$field.val(rowCount);
-		            }
+					if ($field.attr('class') == 'panel-count') {
+						$field.val(rowCount);
+					}
+					if ($field.attr('class') == 'widget_shortcode') {
+						shortcode = $field.val().split(':');
+						if(shortcode[0] && shortcode[1]){
+							$field.val( shortcode[0] + ':' + (rowCount+1) + '}' );
+						}
+					}
 		        });
-
 		        $(this).find('.add-panel').each(function(panelCount){
 		            $panel_button = $(this);
 

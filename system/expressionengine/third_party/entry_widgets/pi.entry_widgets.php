@@ -79,11 +79,13 @@ class Entry_widgets extends Entry_widget {
 		// $output = '';
 		$variables = array();
 
+		$i = 1;
 		foreach ($widgets as &$widget)
 		{
 			$widget->options = $this->EE->entry_widget->unserialize_options( $widget->options );
 			$widget->options['title'] = $widget->instance_title;
 			$widget->body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
+			$widget->widget_count = $i++;
 			// $output .= $this->EE->entry_widget->render($widget->slug, $widget->options);
 			$variables[]['widgets'][] = (array) $widget;
 		}

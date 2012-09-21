@@ -47,7 +47,16 @@
 
 		<thead>
 			<tr>
-				<th colspan="2"><?php echo $widget['title']; ?> <a class="widget-delete">x</a></th>
+				<th colspan="2">
+					<?php echo $widget['title']; ?>
+					<?php 
+					if($widget_area['show_shortcode'])
+					{
+						echo form_input('x', '{'.$widget_area['slug'].':'.($row_count + 1).'}', 'class="widget_shortcode"'); 
+					}
+					?>
+				 	<a class="widget-delete">x</a>
+				</th>
 			</tr>
 		</thead>
 		<tbody>
