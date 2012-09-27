@@ -17,7 +17,7 @@ class Widget_Related_entries extends Entry_widget
 	
 	public $fields = array(
 		array(
-			'field'   => 'channel_id',
+			'field'   => 'channel_name',
 			'label'   => 'Channel',
 			'rules'   => 'trim'
 		),
@@ -25,17 +25,31 @@ class Widget_Related_entries extends Entry_widget
 			'field'   => 'limit',
 			'label'   => 'Number of entries',
 			'rules'   => 'numeric'
+		),
+		array(
+			'field'   => 'show_future_entries',
+			'label'   => 'Show Future Entries',
+			'rules'   => 'trim'
+		),
+		array(
+			'field'   => 'categories',
+			'label'   => 'Categories',
+			'rules'   => 'trim'
 		)
 	);
 
 	public function run($options)
 	{
-		$limit 		= (isset($options['limit'])) ? $options['limit'] : 0;
-		$channel_id = (isset($options['channel_id'])) ? $options['channel_id'] : 0;
+		$limit 				 = (isset($options['limit'])) ? $options['limit'] : 0;
+		$channel_name 		 = (isset($options['channel_name'])) ? $options['channel_name'] : 0;
+		$show_future_entries = (isset($options['show_future_entries'])) ? $options['show_future_entries'] : 'no';
+		$categories 		 = (isset($options['categories'])) ? $options['categories'] : '';
 
 		return array(
 			'limit' 	 => $limit,
-			'channel_id' => $channel_id,
+			'channel_name' => $channel_name,
+			'show_future_entries' => $show_future_entries,
+			'categories' => $categories
 		);
 	}
 	
@@ -47,8 +61,13 @@ class Widget_Related_entries extends Entry_widget
 
 		foreach($channels as $channel)
 		{
-			$options['channel_select'][$channel['channel_id']] = $channel['channel_title'];
+			$options['channel_select'][$channel['channel_name']] = $channel['channel_title'];
 		}
+
+		$options['show_future_entries_select'] = array(
+			'no' => 'No',
+			'yes' => 'Yes'
+		);
 
 		return array('options' => $options); 
 	}

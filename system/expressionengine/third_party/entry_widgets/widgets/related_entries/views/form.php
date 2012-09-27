@@ -1,6 +1,7 @@
-<ol>
-
-	<li class="even">
+<table>
+	<tbody>
+	<tr>
+		<td>
 		<label>Number of Entries</label>
 		<?php 
 			$select_options = array(
@@ -11,10 +12,22 @@
 			);
 			echo form_dropdown($field_name.'[limit]', $select_options, $options['limit']); 
 		?>
-	</li>
-	<li class="even">
+	</td>
+	<td>
 		<label>Channel</label>
 		<?php 
-			echo form_dropdown($field_name.'[channel_id]', $options['channel_select'], $options['channel_id']); ?>
-	</li>
-</ol>
+			echo form_dropdown($field_name.'[channel_name]', $options['channel_select'], $options['channel_name']); ?>
+	</td>
+	<td>
+		<label>Show Future Entries</label>
+		<?php 
+			echo form_dropdown($field_name.'[show_future_entries]', $options['show_future_entries_select'], $options['show_future_entries']); ?>
+	</td>
+	<td>
+		<label>Categories</label>
+		<?php 
+			echo form_input($field_name.'[categories]', $options['categories']); ?>
+	</td>
+</tr>
+</tbody>
+</table>
