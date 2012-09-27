@@ -87,7 +87,8 @@ class Entry_widgets_ft extends EE_Fieldtype {
 				$w_data['form'] = $this->EE->entry_widget->render_backend(
 					$w_data['widget']['slug'], 
 					isset($w_data['widget_instance']['options']) ? $w_data['widget_instance']['options'] : array(),
-					$this->field_name.'['.$w_data['row_count'].'][options]'
+					$this->field_name.'['.$w_data['row_count'].'][options]',
+					$w_data['widget_instance']
 				);
 
 				array_walk_recursive($w_data, array($this, '_filter'));
@@ -106,15 +107,10 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
     		$entry_id = $this->EE->input->get_post('entry_id');
 
-
-
     		$this->data->widget_instances = $this->EE->entry_widget->list_area_instances(
 							   		$this->data->settings['area_slug'], 
 									$entry_id
 								);
-
-
-    		
 
 			foreach($this->data->widget_instances as $widget)
 			{
@@ -129,13 +125,13 @@ class Entry_widgets_ft extends EE_Fieldtype {
 				$data['form'] = $this->EE->entry_widget->render_backend(
 					$widget->slug, 
 					isset($widget->options) ? $this->EE->entry_widget->unserialize_options($widget->options) : array(),
-					$this->field_name.'['.$data['row_count'].'][options]'
+					$this->field_name.'['.$data['row_count'].'][options]',
+					$data['widget_instance']
 				);
 
 				$this->data->widgets[] = $this->EE->load->view('field/add_instance', $data, TRUE);
 
 			}
-
 		
 		}
 
@@ -145,7 +141,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	public static function _filter(&$value) {
   		$value = htmlspecialchars_decode($value);
 	}
-
 
 	private function _add_widget_assets()
 	{

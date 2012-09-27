@@ -98,6 +98,9 @@ class Entry_widgets_mcp {
 		$widget_area_id = $this->EE->input->get_post('widget_area_id');
 		$field_name 	= $this->EE->input->get_post('field_name');
 
+		if(!$widget_id)
+			return;
+
 		$data = array();
 
 		$data['widget'] 		= (array) $this->EE->entry_widget->get_widget($widget_id);

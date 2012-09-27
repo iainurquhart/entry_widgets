@@ -121,6 +121,8 @@ class Entry_widgets_tab {
 			// process new and update existing
 			foreach($widget_data as $key => $widget)
 			{
+
+				$widget['options'] = (isset($widget['options'])) ? $widget['options'] : array();
 				// edit an existing
 				if( isset($widget['instance_id']) && $widget['instance_id'] != '')
 				{

@@ -17,7 +17,7 @@ class Entry_widget
 		foreach ($this->EE->load->get_package_paths() as $path)
 		{
 			
-			$widgets = glob($path.'entry_widget/*', GLOB_ONLYDIR);
+			$widgets = glob($path.'widgets/*', GLOB_ONLYDIR);
 
 			if ( ! is_array($widgets))
 			{
@@ -216,7 +216,7 @@ class Entry_widget
 
 
 
-	function render_backend($name, $saved_data = array(), $name_atribute)
+	function render_backend($name, $saved_data = array(), $name_atribute, $instance = '')
 	{
 
 		$this->_spawn_widget($name);
@@ -241,7 +241,14 @@ class Entry_widget
 			//$options[$field_name] = set_value($field_name, @$saved_data[$field_name]);
 			$options[$field_name] = @$saved_data[$field_name];
 
+
 		}
+
+
+
+		$options['instance_title'] = (isset($instance['title'])) ? $instance['title'] : '';
+		$options['widget_id'] = (isset($instance['id'])) ? $instance['id'] : '';
+
 
 		// Check for default data if there is any
 		$data = method_exists($this->_widget, 'form') ? call_user_func(array(&$this->_widget, 'form'), $options) : array();
