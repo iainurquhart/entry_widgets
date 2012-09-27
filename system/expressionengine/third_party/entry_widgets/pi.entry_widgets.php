@@ -99,6 +99,13 @@ class Entry_widgets extends Entry_widget {
 
 	}
 
+	public function prep_vars()
+	{
+		$prefix = $this->EE->TMPL->tagparams['var_prefix'];
+		return str_replace($prefix, '', $this->EE->TMPL->tagdata);
+
+	}
+
 	
 }
 /* End of file mod.entry_widgets.php */
