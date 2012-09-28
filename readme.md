@@ -39,18 +39,20 @@ Follow your nose there and review how to add a widget.
 
 #### Code Example
 
-To output your widgets, you can use the following as an example
+To output your widgets, you can use the following as an example. Note here I'm using Stash, and I'm also embedding content widgets inside a content area via passing by reference. In this case I'm also using Low Replace to strip the 'p' tags from around my widgets also.
 
 	{embed="layouts/master"}
 
 	{exp:channel:entries limit="1"}
 
+		<!-- create the needles for content widgets :) -->
 		{exp:entry_widgets:render area="content_widget" entry_id="{entry_id}" parse="inward"}		
 			{exp:stash:set name="content_widget:{widget_count}" type="snippet"}		
 				{widget_body}
 			{/exp:stash:set}
 		{/exp:entry_widgets:render}
 
+		<!-- stash the main content, and stip <p> tags from around content widgets -->
 		{exp:stash:set name="main_content" parse_tags="yes"}
 			<h1>{title}</h1>
 			{exp:low_replace find="<p.*?>\n.*?({.*?:[0-9]+}).*?<\/p>" replace="$1" regex="yes"}
@@ -58,6 +60,7 @@ To output your widgets, you can use the following as an example
 			{/exp:low_replace} 
 		{/exp:stash:set}
 
+		<!-- stash a sidebar with some widgets from a single widget area -->
 		{exp:stash:set name="sidebar"}
 			{exp:entry_widgets:render area="sidebar_features" entry_id="{entry_id}" parse="inward"}		
 				{widget_body}
