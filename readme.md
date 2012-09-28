@@ -1,6 +1,6 @@
 # Entry Widgets for ExpressionEngine 2
 
-![Example Widget Publish Page](http://iain.co.nz/dev/entry_widget.png)
+![Example Widget Publish Page](http://iain.co.nz/dev/widget_2.png)
 
 NOTE: this add-on is not production ready and is open for developer review/discussion.
 
