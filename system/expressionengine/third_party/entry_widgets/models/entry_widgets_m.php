@@ -80,7 +80,6 @@ class Entry_widgets_m
 		$order = isset($last_widget->order) ? $last_widget->order + 1 : 1;
 		
 		$this->EE->db->insert('entry_widget_instances', array(
-			'title' 	 => $input['title'],
 			'entry_id' 	 => $input['entry_id'],
 			'widget_id'  => $input['widget_id'],
 			'widget_area_id' => $input['widget_area_id'],
@@ -103,7 +102,6 @@ class Entry_widgets_m
 		return $this->EE->db->update(
 			'entry_widget_instances', 
 			array(
-    			'title' => $input['title'],
 				'widget_area_id' => $input['widget_area_id'],
 				'options' => $input['options'],
 				'order' => $key
@@ -114,7 +112,7 @@ class Entry_widgets_m
 
 	function get_by_area($slug, $entry_id = '')
 	{
-		$this->EE->db->select('wi.id, w.slug, wi.id as instance_id, wi.widget_id, wi.title as instance_title, w.title, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
+		$this->EE->db->select('wi.id, w.slug, wi.id as instance_id, wi.widget_id, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
 			->from('entry_widget_areas wa')
 			->join('entry_widget_instances wi', 'wa.id = wi.widget_area_id')
 			->join('entry_widgets w', 'wi.widget_id = w.id')
@@ -150,7 +148,7 @@ class Entry_widgets_m
 
 	function get_instance($id)
 	{
-		$this->EE->db->select('w.id, w.slug, wi.id as instance_id, wi.title as instance_title, w.title, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
+		$this->EE->db->select('w.id, w.slug, wi.id as instance_id, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
 			->from('entry_widget_areas wa')
 			->join('entry_widget_instances wi', 'wa.id = wi.widget_area_id')
 			->join('entry_widgets w', 'wi.widget_id = w.id')

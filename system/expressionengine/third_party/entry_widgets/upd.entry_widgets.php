@@ -81,7 +81,6 @@ class Entry_widgets_upd {
 		$this->EE->db->query('CREATE TABLE '.$this->EE->db->dbprefix('entry_widget_instances').' (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `entry_id` int(11) DEFAULT NULL,
-		  `title` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
 		  `widget_id` int(11) DEFAULT NULL,
 		  `widget_area_id` int(11) DEFAULT NULL,
 		  `options` text COLLATE utf8_unicode_ci NOT NULL,

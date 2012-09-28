@@ -60,12 +60,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="odd">
-				<td>
-					<label><?php echo lang('widgets_instance_title'); ?></label>
-					<?php echo form_input($field_name.'[title]', (isset($widget_instance['title'])) ? $widget_instance['title'] : ''); ?>
-				</td>
-			</tr>
+			
 
 			<?php if($form): ?>
 			<tr class="odd widget-options">

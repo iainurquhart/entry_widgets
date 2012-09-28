@@ -51,7 +51,6 @@ class Entry_widgets_tab {
 
 		foreach ($widget_areas as $area) 
 		{
-			
 			$settings[] = array(
 				'field_id' => 		'widget_'.$area->slug,
 				'field_label'       => $area->title,
@@ -71,8 +70,6 @@ class Entry_widgets_tab {
 				)
 			);
         }
-
-       
 
         return $settings;
 	}
@@ -121,7 +118,6 @@ class Entry_widgets_tab {
 			// process new and update existing
 			foreach($widget_data as $key => $widget)
 			{
-
 				$widget['options'] = (isset($widget['options'])) ? $widget['options'] : array();
 				// edit an existing
 				if( isset($widget['instance_id']) && $widget['instance_id'] != '')
@@ -130,25 +126,20 @@ class Entry_widgets_tab {
 						$widget['instance_id'], // this should be widget_instance_id
 						$entry_id, 
 						$widget['widget_id'],
-						$widget['title'], 
 						$widget['widget_area_id'], 
 						$widget['options'],
 						$key
 					);
-
 				}
 				else // add new
 				{
-
 					$result = $this->EE->entry_widget->add_instance( 
 						$entry_id, 
-						$widget['title'], 
 						$widget['widget_id'],
 						$widget['widget_area_id'], 
 						$widget['options'],
 						$key
 					);
-
 				}
 			}
 
@@ -156,10 +147,7 @@ class Entry_widgets_tab {
 
 	}
 
-	/**
-	 * Merge our tab data into the main channel data array
-	 * So EE just takes it as if it was in the post data
-	 */
+
 	function validate_publish($params)
 	{
 		// @todo

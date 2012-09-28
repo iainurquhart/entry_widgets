@@ -221,8 +221,6 @@ class Entry_widget
 
 		$this->_spawn_widget($name);
 
-
-
 		// No fields, no backend, no rendering
 		if (empty($this->_widget->fields))
 		{
@@ -230,7 +228,6 @@ class Entry_widget
 		}
 
 		$options = array();
-
 
 		foreach ($this->_widget->fields as $field)
 		{
@@ -244,11 +241,7 @@ class Entry_widget
 
 		}
 
-
-
-		$options['instance_title'] = (isset($instance['title'])) ? $instance['title'] : '';
 		$options['widget_id'] = (isset($instance['id'])) ? $instance['id'] : '';
-
 
 		// Check for default data if there is any
 		$data = method_exists($this->_widget, 'form') ? call_user_func(array(&$this->_widget, 'form'), $options) : array();
@@ -283,7 +276,7 @@ $widget['instance_id'], // this should be widget_instance_id
 					$widget['widget_area_id'], 
 					$widget['options']
 */
-	function edit_instance($instance_id, $entry_id, $widget_id, $title, $widget_area_id, $options = array(), $key)
+	function edit_instance($instance_id, $entry_id, $widget_id, $widget_area_id, $options = array(), $key)
 	{
 
 		
@@ -306,9 +299,8 @@ $widget['instance_id'], // this should be widget_instance_id
 			$instance_id, 
 				array(
 					'entry_id' => $entry_id,
-					'title' => $title,
 					'widget_area_id' => $widget_area_id,
-					'options' => $this->_serialize_options($options)
+					'options' => $this->encode_options($options)
 				),
 			$key
 		);
@@ -320,7 +312,7 @@ $widget['instance_id'], // this should be widget_instance_id
 
 
 
-	function add_instance($entry_id, $title, $widget_id, $widget_area_id, $options = array(), $key)
+	function add_instance($entry_id, $widget_id, $widget_area_id, $options = array(), $key)
 	{
 
 		$slug = $this->get_widget($widget_id)->slug;
@@ -339,10 +331,9 @@ $widget['instance_id'], // this should be widget_instance_id
 
 		$this->EE->entry_widgets_m->insert_instance(array(
 			'entry_id' => $entry_id,
-			'title' => $title,
 			'widget_id' => $widget_id,
 			'widget_area_id' => $widget_area_id,
-			'options' => $this->_serialize_options($options),
+			'options' => $this->encode_options($options),
 			'order'	=> $key
 			
 		));
@@ -401,14 +392,14 @@ $widget['instance_id'], // this should be widget_instance_id
     }
 
 
-    private function _serialize_options($options)
+    public function encode_options($options)
 	{
-		return serialize((array) $options);
+		return json_encode((array) $options);
 	}
 
-	public function unserialize_options($options)
+	public function decode_options($options)
 	{
-		return (array) unserialize($options);
+		return (array) json_decode($options, TRUE);
 	}
 
 
@@ -439,7 +430,8 @@ $widget['instance_id'], // this should be widget_instance_id
 
 		if ($widget)
 		{
-			$widget->options = $this->unserialize_options($widget->options);
+			$widget->options = $this->decode_options($widget->options);
+
 			return $widget;
 		}
 

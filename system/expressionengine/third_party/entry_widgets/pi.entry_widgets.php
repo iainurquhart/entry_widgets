@@ -25,10 +25,8 @@ class Entry_widgets extends Entry_widget {
 
 	private $_default_wrapper = '
 		<div class="widget {slug}">
-			<h3>{instance_title}</h3>
-
 			<div class="widget-body">
-			{body}
+			{widget_body}
 			</div>
 		</div>';
 	
@@ -48,8 +46,6 @@ class Entry_widgets extends Entry_widget {
 		$id = $this->EE->TMPL->fetch_param('id');
 		
 		$widget = $this->EE->entry_widget->get_instance($id, TRUE);
-
-		$widget->options['title'] = $widget->instance_title;
 
 		return $widget ? $this->EE->entry_widget->render($widget->slug, $widget->options) : '';
 	}
@@ -82,11 +78,9 @@ class Entry_widgets extends Entry_widget {
 		$i = 1;
 		foreach ($widgets as &$widget)
 		{
-			$widget->options = $this->EE->entry_widget->unserialize_options( $widget->options );
-			$widget->options['title'] = $widget->instance_title;
-			$widget->body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
+			$widget->options = $this->EE->entry_widget->decode_options( $widget->options );
+			$widget->widget_body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
 			$widget->widget_count = $i++;
-			// $output .= $this->EE->entry_widget->render($widget->slug, $widget->options);
 			$variables[]['widgets'][] = (array) $widget;
 		}
 
