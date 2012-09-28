@@ -41,25 +41,43 @@ Follow your nose there and review how to add a widget.
 
 To output your widgets, you can use the following as an example
 
+	{embed="layouts/master"}
+
 	{exp:channel:entries limit="1"}
 
-		<h1>{title}</h1>
-
-		{exp:entry_widgets:render area="sidebar" entry_id="{entry_id}"}
-			<div class="widgetitywidget {slug}">
-				<fieldset>
-					<legend>This is a widget</legend>
-						{if instance_title}<h3>{instance_title}</h3>{/if}
-						<div class="widget-body">
-							{body}
-						</div>
-				</fieldset>
-			</div>
+		{exp:entry_widgets:render area="content_widget" entry_id="{entry_id}" parse="inward"}		
+			{exp:stash:set name="content_widget:{widget_count}" type="snippet"}		
+				{widget_body}
+			{/exp:stash:set}
 		{/exp:entry_widgets:render}
+
+		{exp:stash:set name="main_content" parse_tags="yes"}
+			<h1>{title}</h1>
+			{exp:low_replace find="<p.*?>\n.*?({.*?:[0-9]+}).*?<\/p>" replace="$1" regex="yes"}
+				{main_content}
+			{/exp:low_replace} 
+		{/exp:stash:set}
+
+		{exp:stash:set name="sidebar"}
+			{exp:entry_widgets:render area="sidebar_features" entry_id="{entry_id}" parse="inward"}		
+				{widget_body}
+			{/exp:entry_widgets:render}
+		{/exp:stash:set}
 
 	{/exp:channel:entries}
 
-The {body} variable, will render whatever is defined by the widget's display method. Each widget is located within the 'widgets' directory and there are two examples for devs to review.
+And then in layouts/master
+	
+	...
+	<article>
+		{exp:stash:get name="main_content" parse_tags="yes"}
+	</article>
+	...
+	<aside>
+		{exp:stash:get name="sidebar"}
+	</aside>
+
+The {widget_body} variable, will render whatever is defined by the widget's display method. Each widget is located within the 'widgets' directory and there are two examples for devs to review.
 
 The [Related Entries](https://github.com/iainurquhart/entry_widgets/tree/master/system/expressionengine/third_party/entry_widgets/widgets/related_entries) widget should be a good example of what is possible with widgets, in particular - review the [display.php](https://github.com/iainurquhart/entry_widgets/blob/master/system/expressionengine/third_party/entry_widgets/widgets/related_entries/views/display.php) view.
 
