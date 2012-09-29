@@ -18,8 +18,7 @@ class Widget_Html_data extends Entry_widget
 	public $fields = array(
 		array(
 			'field'   => 'html_data',
-			'label'   => 'HTML',
-			'rules'   => 'required'
+			'label'   => 'HTML'
 		)
 	);
 

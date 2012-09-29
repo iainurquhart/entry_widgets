@@ -65,6 +65,9 @@
 		box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
 		border-radius: 3px;
 	}
+	.entry_widget table table {
+		box-shadow: none;
+	}
 	.entry_widget_list * {
 		outline:none;
 	}
@@ -73,6 +76,10 @@
 		height: 20px; vertical-align: middle;
 		padding: 8px 10px;
 	}
+	#mainContent ul.entry_widget_areas table table th {
+		padding: 5px;
+	}
+
 	#mainContent ul.entry_widget_areas a.widget-delete {
 		float: right;
 		text-decoration: none;
