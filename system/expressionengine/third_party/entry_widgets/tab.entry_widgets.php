@@ -112,6 +112,7 @@ class Entry_widgets_tab {
 			{
 				$this->EE->db->where_not_in('id', $instances);
 				$this->EE->db->where('widget_area_id', $area->id );
+				$this->EE->db->where('entry_id', $entry_id );
 				$this->EE->db->delete('entry_widget_instances');
 			}
 
