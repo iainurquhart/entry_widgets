@@ -97,7 +97,7 @@ class Entry_widgets_m
 			'site_id' 	 => $this->site_id
 		);
 
-		if (isset($this->EE->publisher_lib)) 
+		if (isset($this->EE->publisher_lib) && isset($this->EE->publisher_lib->entry_widget->save_status)) 
 		{
 			$data['publisher_lang_id'] = $this->EE->publisher_lib->lang_id;
 			$data['publisher_status'] = $this->EE->publisher_lib->entry_widget->save_status; // hack from iain
@@ -121,9 +121,8 @@ class Entry_widgets_m
 			'order' => $key
 		);
 
-		if (isset($this->EE->publisher_lib)) 
+		if (isset($this->EE->publisher_lib) && isset($this->EE->publisher_lib->entry_widget->save_status)) 
 		{
-
 			$data['publisher_lang_id'] = $this->EE->publisher_lib->lang_id;
 			$data['publisher_status'] = $this->EE->publisher_lib->entry_widget->save_status; // hack from iain
 		}
