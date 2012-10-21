@@ -91,6 +91,23 @@ class Entry_widgets_upd {
 		  PRIMARY KEY (`id`)
 		)');
 
+		// Publisher integration
+		if (isset($this->EE->publisher_lib))
+		{
+			$this->EE->load->dbforge();
+			$fields = array(
+				'publisher_lang_id' => array(
+					'type' => 'int',
+					'constraint' => '4'
+				),
+				'publisher_status' => array(
+					'type' => 'varchar',
+					'constraint' => '24'
+				)
+			);
+			$this->EE->dbforge->add_column('entry_widget_instances', $fields);
+		}
+
 		$this->EE->db->query('CREATE TABLE '.$this->EE->db->dbprefix('entry_widgets').' (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
 		  `slug` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT "",

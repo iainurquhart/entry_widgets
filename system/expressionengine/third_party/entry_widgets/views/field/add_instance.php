@@ -29,10 +29,16 @@
 			echo form_hidden($field_name.'[widget_id]', $widget_instance['widget_id']); 
 		}
 
-		if(isset($widget['widget_id']))
-		{
-			echo form_hidden($field_name.'[widget_id]', $widget['widget_id']); 
-		}
+		
+	}
+
+	if(isset($widget['widget_id']))
+	{
+		echo form_hidden($field_name.'[widget_id]', $widget['widget_id']);
+	}
+	if(isset($widget['id']))
+	{
+		echo form_hidden($field_name.'[widget_id]', $widget['id']);
 	}
 
 	?>

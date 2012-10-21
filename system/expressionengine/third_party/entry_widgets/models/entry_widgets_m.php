@@ -34,6 +34,13 @@ class Entry_widgets_m
 
 	public function get_widget_instance_by($field, $id)
 	{
+		// Publisher integration
+		if (isset($this->EE->publisher_lib)) 
+		{
+			$this->EE->db->where('publisher_lang_id', $this->EE->publisher_lib->lang_id);
+			$this->EE->db->where('publisher_status', $this->EE->publisher_lib->status);
+		}
+
 		return $this->EE->db
 			->where($field, $id)
 			->get('entry_widget_instances')
@@ -78,8 +85,8 @@ class Entry_widgets_m
 			->row();
 			
 		$order = isset($last_widget->order) ? $last_widget->order + 1 : 1;
-		
-		$this->EE->db->insert('entry_widget_instances', array(
+
+		$data = array(
 			'entry_id' 	 => $input['entry_id'],
 			'widget_id'  => $input['widget_id'],
 			'widget_area_id' => $input['widget_area_id'],
@@ -88,7 +95,15 @@ class Entry_widgets_m
 			'created_on' => now(),
 			'updated_on' => now(),
 			'site_id' 	 => $this->site_id
-		));
+		);
+
+		if (isset($this->EE->publisher_lib)) 
+		{
+			$data['publisher_lang_id'] = $this->EE->publisher_lib->lang_id;
+			$data['publisher_status'] = $this->EE->publisher_lib->entry_widget->save_status; // hack from iain
+		}
+		
+		$this->EE->db->insert('entry_widget_instances', $data);
 
 		return $this->EE->db->insert_id();
 	}
@@ -96,17 +111,24 @@ class Entry_widgets_m
 
 	public function update_instance($instance_id, $input, $key)
 	{
+		
 		$this->EE->db->where('id', $instance_id);
 		$this->EE->db->where('site_id', $this->site_id);
-		
-		return $this->EE->db->update(
-			'entry_widget_instances', 
-			array(
-				'widget_area_id' => $input['widget_area_id'],
-				'options' => $input['options'],
-				'order' => $key
-			)
+
+		$data = array(
+			'widget_area_id' => $input['widget_area_id'],
+			'options' => $input['options'],
+			'order' => $key
 		);
+
+		if (isset($this->EE->publisher_lib)) 
+		{
+
+			$data['publisher_lang_id'] = $this->EE->publisher_lib->lang_id;
+			$data['publisher_status'] = $this->EE->publisher_lib->entry_widget->save_status; // hack from iain
+		}
+		
+		return $this->EE->db->update('entry_widget_instances', $data);
 	}
 
 
@@ -122,6 +144,12 @@ class Entry_widgets_m
 		if($entry_id)
 		{
 			$this->EE->db->where('wi.entry_id', $entry_id);
+		}
+
+		if (isset($this->EE->publisher_lib)) 
+		{
+			$this->EE->db->where('publisher_lang_id', $this->EE->publisher_lib->lang_id);
+			$this->EE->db->where('publisher_status', $this->EE->publisher_lib->status);
 		}
 
 		$this->EE->db->order_by('wi.order');

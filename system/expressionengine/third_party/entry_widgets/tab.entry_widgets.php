@@ -79,14 +79,31 @@ class Entry_widgets_tab {
 	function publish_data_db($params)
 	{
 
+		// Publisher integration
+		// hack a fix in for now 
+		// http://boldminded.com/support/edit/240
+		if (isset($this->EE->publisher_lib)) 
+		{
+			$save_status =  (isset($params['data']['save_status'])) 
+								? $params['data']['save_status'] : $params['meta']['status'];
+
+			$view_status =  (isset($params['data']['view_status'])) 
+								? $params['data']['view_status'] : $params['meta']['status'];
+
+			$this->EE->publisher_lib->entry_widget->save_status = $save_status;
+			
+		}
+
+
 		$entry_id = $params['entry_id'];
 		$widget_areas 	= $this->EE->entry_widget->list_areas();
+		$extra = '';
 
 		foreach ($widget_areas as $area) 
 		{
 
 			$widget_data = $params['mod_data']['widget_'.$area->slug];
-			
+
 			$instances = array();
 
 			// do we have widget data
@@ -94,6 +111,12 @@ class Entry_widgets_tab {
 			{
 				$this->EE->db->where('entry_id', $entry_id );
 				$this->EE->db->where('widget_area_id', $area->id );
+				// Publisher integration
+				if (isset($this->EE->publisher_lib)) 
+				{
+					$this->EE->db->where('publisher_lang_id', $this->EE->publisher_lib->lang_id);
+					$this->EE->db->where('publisher_status', $save_status);
+				}
 				$this->EE->db->delete('entry_widget_instances');
 				continue;
 			}
@@ -111,13 +134,32 @@ class Entry_widgets_tab {
 			if($instances)
 			{
 				$this->EE->db->where_not_in('id', $instances);
+				$this->EE->db->where('entry_id', $entry_id );
 				$this->EE->db->where('widget_area_id', $area->id );
+
+				// Publisher integration
+				if (isset($this->EE->publisher_lib)) 
+				{
+					$this->EE->db->where('publisher_lang_id', $this->EE->publisher_lib->lang_id);
+					$this->EE->db->where('publisher_status', $save_status);
+				}
+
 				$this->EE->db->delete('entry_widget_instances');
 			}
+
+
 
 			// process new and update existing
 			foreach($widget_data as $key => $widget)
 			{
+				if (isset($this->EE->publisher_lib)) 
+				{
+					if($save_status != $view_status && isset($widget['instance_id']))
+					{
+						unset($widget['instance_id']);
+					}
+				}
+
 				$widget['options'] = (isset($widget['options'])) ? $widget['options'] : array();
 				// edit an existing
 				if( isset($widget['instance_id']) && $widget['instance_id'] != '')
