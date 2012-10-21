@@ -129,6 +129,11 @@ class Entry_widgets_m
 		{
 			$this->EE->db->where('wi.is_draft', 1);
 		}
+		else
+		{
+			$this->EE->db->where('wi.is_draft', 0);
+		}
+		
 
 		if($entry_id)
 		{
