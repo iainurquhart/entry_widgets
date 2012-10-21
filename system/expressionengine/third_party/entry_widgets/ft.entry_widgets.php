@@ -66,8 +66,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 			return 'no area defined';
 		}
 
-		// print_r($this->settings['widget_area_id']);
-
 		// Firstly, install any uninstalled widgets
 		$uninstalled_widgets = $this->EE->entry_widget->list_uninstalled_widgets();
 		foreach($uninstalled_widgets as $widget) // install them
@@ -79,7 +77,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->data->settings = (array) $this->EE->entry_widgets_m->get_area_by( 'id', $this->settings['widget_area_id'] );
 		$this->data->field_name = $this->field_name;
 		$this->data->widgets = '';
-
 
 		if(is_array($data)) // if something on the publish page fails to validate, we've got access to our data
 		{
@@ -202,7 +199,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		if(!$areas)
 		{
 			$this->EE->table->add_row(
-				lang('Add an area first!'),
+				lang('Add a widget area via the module interface first!'),
 				''
 			);
 			return;
@@ -247,22 +244,50 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 * @return	field data
 	 *
 	 */
-
-
 	function save($data)
 	{
 		$this->EE->load->library('entry_widget');
 		$this->widget_cache->data = $data;
 		$this->widget_cache->is_draft = 0;
+		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) && $this->EE->session->cache['ep_better_workflow']['is_draft']) 
+		{
+			$this->widget_cache->is_draft = 1;
+		}
+
+
+
 		return '';
 	}
 
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * post_save
+	 *
+	 * @access	public
+	 * @return	field data
+	 *
+	 */
 	function post_save($data)
 	{
-		return $this->_save($data);
+		$this->widget_cache->is_draft = 0;
+		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) && $this->EE->session->cache['ep_better_workflow']['is_draft']) 
+		{
+			$this->widget_cache->is_draft = 1;
+		}
+		$this->_save($data);
 	}
 
+	// --------------------------------------------------------------------
 
+	/**
+	 * post_save
+	 *
+	 * @access	public
+	 * @return	field data
+	 *
+	 */
 	public function draft_save($data, $draft_action)
 	{
 		$this->widget_cache->is_draft = 1;
@@ -275,6 +300,12 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		// We are creating a new draft
 		if ($draft_action == 'create')
 		{
+			// remove all previous drafts
+			$this->EE->db->where('widget_area_id', $this->settings['widget_area_id'] );
+			$this->EE->db->where('entry_id', $this->settings['entry_id'] );
+			$this->EE->db->where('is_draft', 1 );
+			$this->EE->db->delete('entry_widget_instances');
+
 			foreach ($this->widget_cache->data  as $key => $widget)
 			{
 			  	 $this->EE->entry_widget->add_instance( 
@@ -288,6 +319,25 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		}
 		else // We are updating a draft
 		{
+			$instances = array();
+			foreach($this->widget_cache->data as $key => $widget)
+			{
+				if(isset($widget['instance_id']))
+				{
+					$instances[] = $widget['instance_id'];
+				}
+			}
+
+			// remove any instances not submitted
+			if($instances)
+			{	
+				$this->EE->db->where_not_in('id', $instances);
+				$this->EE->db->where('widget_area_id', $this->settings['widget_area_id'] );
+				$this->EE->db->where('entry_id', $this->settings['entry_id'] );
+				$this->EE->db->delete('entry_widget_instances');
+			}
+
+
 			foreach ($this->widget_cache->data as $key => $widget)
 			{
 			  // Is this an existing item
@@ -360,6 +410,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 		$widget_data = $this->widget_cache->data;
 		$instances = array();
+		$this->widget_cache->is_draft = 0;
 
 		// do we have widget data
 		if(!is_array($widget_data))
