@@ -32,11 +32,12 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	public function __construct()
 	{
 		parent::EE_Fieldtype();
+		
+		$this->widget_cache =& $this->EE->session->cache['entry_widgets_data'];
 
 		$this->site_id 		= $this->EE->config->item('site_id');
 		$this->asset_path 	= $this->EE->config->item('theme_folder_url').'third_party/entry_widgets/';
 		$this->drag_handle  = '&nbsp;';
-		$this->cache 	   =& $this->EE->session->cache['entry_widgets_data'];
 	}
 	
 	// --------------------------------------------------------------------
@@ -54,10 +55,18 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 
 		$this->EE->load->library('entry_widget');
+		$this->EE->load->model('entry_widgets_m');
 		$this->_add_widget_assets();
 		$i = 0;
 
 		$this->data->available_widgets = array();
+
+		if($this->settings['widget_area_id'] == '')
+		{
+			return 'no area defined';
+		}
+
+		// print_r($this->settings['widget_area_id']);
 
 		// Firstly, install any uninstalled widgets
 		$uninstalled_widgets = $this->EE->entry_widget->list_uninstalled_widgets();
@@ -67,9 +76,10 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		}
 
 		$this->data->available_widgets = $this->EE->entry_widget->list_available_widgets();
-		$this->data->settings = $this->settings['field_settings'];
+		$this->data->settings = (array) $this->EE->entry_widgets_m->get_area_by( 'id', $this->settings['widget_area_id'] );
 		$this->data->field_name = $this->field_name;
 		$this->data->widgets = '';
+
 
 		if(is_array($data)) // if something on the publish page fails to validate, we've got access to our data
 		{
@@ -108,7 +118,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
     		$entry_id = $this->EE->input->get_post('entry_id');
 
     		$this->data->widget_instances = $this->EE->entry_widget->list_area_instances(
-							   		$this->data->settings['area_slug'], 
+							   		$this->data->settings['slug'], 
 									$entry_id
 								);
 
@@ -144,9 +154,9 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 	private function _add_widget_assets()
 	{
-		if (! isset($this->cache['assets_added']) )
+		if (! isset($this->widget_cache['assets_added']) )
 		{
-			$this->cache['assets_added'] = 1;
+			$this->widget_cache['assets_added'] = 1;
 
 			$this->EE->cp->add_to_head('
 				<script src="'.$this->asset_path.'/js/entry_widgets.js"></script>
@@ -185,9 +195,29 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	function display_settings($data)
 	{
 
+		$this->EE->load->library('entry_widget');
+		$areas = $this->EE->entry_widget->list_areas();
+		$options = array();
+
+		if(!$areas)
+		{
+			$this->EE->table->add_row(
+				lang('Add an area first!'),
+				''
+			);
+			return;
+		}
+		else
+		{
+			foreach($areas as $area)
+			{
+				$options[ $area->id ] = $area->title;
+			}
+		}
+
 		$this->EE->table->add_row(
-			lang('latitude', 'latitude'),
-			form_input('latitude', '')
+			lang('widget_area'),
+			form_dropdown('widget_area_id', $options)
 		);
 	}
 	
@@ -203,8 +233,192 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	function save_settings($data)
 	{
 		return array(
-			'latitude'	=> $this->EE->input->post('latitude')
+			'widget_area_id'	=> $this->EE->input->post('widget_area_id')
 		);
+	}
+
+	
+	// --------------------------------------------------------------------
+
+	/**
+	 * Save
+	 *
+	 * @access	public
+	 * @return	field data
+	 *
+	 */
+
+
+	function save($data)
+	{
+		$this->EE->load->library('entry_widget');
+		$this->widget_cache->data = $data;
+		$this->widget_cache->is_draft = 0;
+		return '';
+	}
+
+	function post_save($data)
+	{
+		return $this->_save($data);
+	}
+
+
+	public function draft_save($data, $draft_action)
+	{
+		$this->widget_cache->is_draft = 1;
+		$this->widget_cache->draft_action = $draft_action;
+
+		// Some Vars
+		$entry_id = $this->settings['entry_id'];
+		$widget_area_id = $this->settings['widget_area_id'];
+
+		// We are creating a new draft
+		if ($draft_action == 'create')
+		{
+			foreach ($this->widget_cache->data  as $key => $widget)
+			{
+			  	 $this->EE->entry_widget->add_instance( 
+						$this->settings['entry_id'], 
+						$widget['widget_id'],
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+			}
+		}
+		else // We are updating a draft
+		{
+			foreach ($this->widget_cache->data as $key => $widget)
+			{
+			  // Is this an existing item
+			  if(isset($widget['instance_id']))
+			  {
+			    	$result = $this->EE->entry_widget->edit_instance(
+						$widget['instance_id'], // this should be widget_instance_id
+						$this->settings['entry_id'], 
+						$widget['widget_id'],
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+			  }
+			  else
+			  {
+			    	$result = $this->EE->entry_widget->add_instance( 
+						$this->settings['entry_id'], 
+						$widget['widget_id'],
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+			  }
+			}
+		}
+
+		return 'data_updated';
+
+	}
+
+	public function draft_discard()
+	{
+		
+		$this->EE->db->delete('entry_widget_instances', array(
+			'entry_id' => $this->settings['entry_id'], 
+			'widget_area_id' => $this->settings['widget_area_id'], 
+			'is_draft' => 1)
+		);
+		
+		return;
+	}
+
+	public function draft_publish()
+	{
+
+		// Delete all the current live content
+		$this->EE->db->delete(
+			'entry_widget_instances', array(
+				'entry_id' => $this->settings['entry_id'], 
+				'widget_area_id' => $this->settings['widget_area_id'], 
+				'is_draft' => 0
+			)
+		); 
+
+		// Update the current draft content to be live
+		$this->EE->db->where('entry_id', $this->settings['entry_id']);
+		$this->EE->db->where('widget_area_id', $this->settings['widget_area_id']);
+		$this->EE->db->where('is_draft', 1);
+		$this->EE->db->update('entry_widget_instances', array('is_draft' => 0));
+
+		return;
+	}
+
+
+
+
+	private function _save($data, $draft_action = '')
+	{
+
+		$widget_data = $this->widget_cache->data;
+		$instances = array();
+
+		// do we have widget data
+		if(!is_array($widget_data))
+		{
+			$this->EE->db->where('widget_area_id', $this->settings['widget_area_id'] );
+			$this->EE->db->where('entry_id', $this->settings['entry_id'] );
+			$this->EE->db->delete('entry_widget_instances');
+		}
+		else
+		{
+			// gather instance ids
+			foreach($widget_data as $key => $widget)
+			{
+				if(isset($widget['instance_id']))
+				{
+					$instances[] = $widget['instance_id'];
+				}
+			}
+
+			// remove any instances not submitted
+			if($instances)
+			{	
+				$this->EE->db->where_not_in('id', $instances);
+				$this->EE->db->where('widget_area_id', $this->settings['widget_area_id'] );
+				$this->EE->db->where('entry_id', $this->settings['entry_id'] );
+				$this->EE->db->delete('entry_widget_instances');
+			}
+
+			// process new and update existing
+			foreach($widget_data as $key => $widget)
+			{
+
+				$widget['options'] = (isset($widget['options'])) ? $widget['options'] : array();
+
+				// edit an existing
+				if( isset($widget['instance_id']) && $widget['instance_id'] != '')
+				{
+					$result = $this->EE->entry_widget->edit_instance(
+						$widget['instance_id'], // this should be widget_instance_id
+						$this->settings['entry_id'], 
+						$widget['widget_id'],
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+				}
+				else // add new
+				{
+
+					$result = $this->EE->entry_widget->add_instance( 
+						$this->settings['entry_id'], 
+						$widget['widget_id'],
+						$widget['widget_area_id'], 
+						$widget['options'],
+						$key
+					);
+				}
+			}
+		}
 	}
 	
 	// --------------------------------------------------------------------

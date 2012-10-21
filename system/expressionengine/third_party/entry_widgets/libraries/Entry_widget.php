@@ -282,18 +282,8 @@ $widget['instance_id'], // this should be widget_instance_id
 		
 		$slug = $this->EE->entry_widgets_m->get_widget_by('id', $widget_id)->slug;
 
-
-		
-		if ( $error = $this->validation_errors($slug, $options, $key) )
-		{
-			return array('status' => 'error', 'error' => $error);
-		}
-		
-
 		// The widget has to do some stuff before it saves
 		$options = $this->EE->entry_widget->prepare_options($slug, $options);
-
-		
 
 		$this->EE->entry_widgets_m->update_instance(
 			$instance_id, 
@@ -315,13 +305,18 @@ $widget['instance_id'], // this should be widget_instance_id
 	function add_instance($entry_id, $widget_id, $widget_area_id, $options = array(), $key)
 	{
 
+
+
 		$slug = $this->get_widget($widget_id)->slug;
 
-		
+
+
+		/*
 		if ( $error = $this->validation_errors($slug, $options, $key) )
 		{
+
 			return array('status' => 'error', 'error' => $error);
-		}
+		}*/
 		
 
 		// The widget has to do some stuff before it saves
@@ -335,7 +330,6 @@ $widget['instance_id'], // this should be widget_instance_id
 			'widget_area_id' => $widget_area_id,
 			'options' => $this->encode_options($options),
 			'order'	=> $key
-			
 		));
 
 		return array('status' => 'success');

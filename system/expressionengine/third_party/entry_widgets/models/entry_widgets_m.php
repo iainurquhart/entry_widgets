@@ -9,6 +9,7 @@ class Entry_widgets_m
 	{
 		$this->EE =& get_instance();
 		$this->site_id = $this->EE->config->item('site_id');
+		$this->widget_cache =& $this->EE->session->cache['entry_widgets_data'];
 	}
 
 	function get_widgets()
@@ -87,8 +88,11 @@ class Entry_widgets_m
 			'`order`' 	 => $input['order'],
 			'created_on' => now(),
 			'updated_on' => now(),
-			'site_id' 	 => $this->site_id
+			'site_id' 	 => $this->site_id,
+			'is_draft' => (isset($this->widget_cache->is_draft) && $this->widget_cache->is_draft == 1) ? 1 : 0
 		));
+
+
 
 		return $this->EE->db->insert_id();
 	}
@@ -104,7 +108,8 @@ class Entry_widgets_m
 			array(
 				'widget_area_id' => $input['widget_area_id'],
 				'options' => $input['options'],
-				'order' => $key
+				'order' => $key,
+				'is_draft' => (isset($this->widget_cache->is_draft) && $this->widget_cache->is_draft == 1) ? 1 : 0
 			)
 		);
 	}
@@ -118,6 +123,12 @@ class Entry_widgets_m
 			->join('entry_widgets w', 'wi.widget_id = w.id')
 			->where('wa.slug', $slug)
 			->where('wi.site_id', $this->site_id);
+
+		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) 
+			&& $this->EE->session->cache['ep_better_workflow']['is_draft'])
+		{
+			$this->EE->db->where('wi.is_draft', 1);
+		}
 
 		if($entry_id)
 		{

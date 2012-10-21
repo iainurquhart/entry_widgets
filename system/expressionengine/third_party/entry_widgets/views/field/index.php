@@ -127,26 +127,24 @@
 	}
 </style>
 
-
-
 <ul class="entry_widget_areas">
 
-	<li data-area-id="<?= $settings['area_id'] ?>" class="widget-area-wrapper">
+	<li data-area-id="<?= $settings['id'] ?>" class="widget-area-wrapper">
 
 		
 
-		<ul class="entry_widget_list" id="widget-list-<?= $settings['area_id'] ?>" style="display:none;">
+		<ul class="entry_widget_list" id="widget-list-<?= $settings['id'] ?>" style="display:none;">
 			<li><h3>Choose a widget type</h3></li>
 		<?php foreach($available_widgets as $widget):?>
 			<li>
-				<a href="#" data-field-name="<?=$field_name?>" data-widget-id="<?= $widget->id ?>" data-area-id="<?= $settings['area_id'] ?>"><?= $widget->title ?></a>
+				<a href="#" data-field-name="<?=$field_name?>" data-widget-id="<?= $widget->id ?>" data-area-id="<?= $settings['id'] ?>"><?= $widget->title ?></a>
 			</li>
 		<?php endforeach ?>
 		</ul>
 
 		
 
-		<div class="entry_widget_data" id="widget-area-<?= $settings['area_id'] ?>">
+		<div class="entry_widget_data" id="widget-area-<?= $settings['id'] ?>">
 
 			<?php 
 				if($widgets)

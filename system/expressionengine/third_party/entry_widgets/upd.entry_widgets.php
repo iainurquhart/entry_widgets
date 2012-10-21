@@ -32,20 +32,6 @@ class Entry_widgets_upd {
 	{
 		$this->EE =& get_instance();
 	}
-
-	function tabs()
-	{			
-		$tabs['entry_widgets'] = array(
-			'entry_widgets' => array(
-				'visible' => 'true',
-				'collapse' => 'false',
-				'htmlbuttons' => 'false',
-				'width' => '100%'
-			)
-        );
-
-    	return $tabs;
-	}
 	
 	// ----------------------------------------------------------------
 	
@@ -59,14 +45,10 @@ class Entry_widgets_upd {
 		$mod_data = array(
 			'module_name'			=> 'entry_widgets',
 			'module_version'		=> $this->version,
-			'has_cp_backend'		=> "y",
-			'has_publish_fields'	=> 'y'
+			'has_cp_backend'		=> "y"
 		);
 		
 		$this->EE->db->insert('modules', $mod_data);
-		
-		$this->EE->load->library('layout');
-		$this->EE->layout->add_layout_tabs($this->tabs());
 
 		$this->EE->db->query('CREATE TABLE '.$this->EE->db->dbprefix('entry_widget_areas').' (
 		  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -88,6 +70,7 @@ class Entry_widgets_upd {
 		  `created_on` int(11) NOT NULL DEFAULT 0,
 		  `updated_on` int(11) NOT NULL DEFAULT 0,
 		  `site_id` int(11) NOT NULL DEFAULT 0,
+		  `is_draft` TINYINT(1) NOT NULL DEFAULT 0,
 		  PRIMARY KEY (`id`)
 		)');
 
@@ -125,9 +108,6 @@ class Entry_widgets_upd {
 		
 		$this->EE->db->where('module_name', 'entry_widgets')
 					 ->delete('modules');
-		
-		$this->EE->load->library('layout');
-		$this->EE->layout->delete_layout_tabs($this->tabs(), 'entry_widgets');
 
 		$this->EE->load->dbforge();
 		$this->EE->dbforge->drop_table('entry_widget_areas');

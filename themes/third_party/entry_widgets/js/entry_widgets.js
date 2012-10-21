@@ -2,7 +2,7 @@ $(function() {
 
 		$.fn.updateWidgetIndexes = function(options){
 		    $(this).find(".entry_widget").each(function(rowCount){
-		        regex = /^([a-z_]+)\[(?:[0-9]+)\](.*)$/;
+		        regex = /^(.*)\[(?:[0-9]+)\](.*)$/;
 		        $(this).attr('data-index', rowCount);
 		        $(this).find('input, select, textarea, file').each(function(fieldCount){
 		            $field = $(this);
