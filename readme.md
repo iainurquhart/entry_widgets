@@ -27,15 +27,11 @@ You get the idea.
 ### Installation
 Add the files as per any regular EE add-on, and enable the Module &amp; Fieldtype.
 
-NOTE: While the fieldtype is installed, it's used by the Tab file - meaning you should not add the Entry Widget fieldtype to any Channel Field Groups. The nature of Tabs are they add themselves to all channels, and utilise installed fields.
-
 ### Configuration
 
 Visit the module interface and add an Area. An area consists of a title and a short name - much like channels do. Create an initial area such as "Sidebar Features" and give it the short name "sidebar".
 
-Then, visit any publish page and you'll see a new "Widgets" tab, with a field labelled "Sidebar Features".
-
-Follow your nose there and review how to add a widget.
+Then, create a custom field and associate the field with the area you created.
 
 #### Code Example
 

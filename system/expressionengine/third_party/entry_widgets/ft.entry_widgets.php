@@ -62,7 +62,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$entry_id = $this->EE->input->get_post('entry_id');
 
 		$this->widget_cache['is_draft'] = 0;
-		
+
 		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) && $this->EE->session->cache['ep_better_workflow']['is_draft']) 
 		{
 			$this->widget_cache['is_draft'] = 1;
@@ -260,8 +260,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 */
 	function save($data)
 	{
-
-
 
 		$this->EE->load->library('entry_widget');
 
