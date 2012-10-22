@@ -17,7 +17,7 @@
 class Entry_widgets_ft extends EE_Fieldtype {
 	
 	var $info = array(
-		'name'		=> 'Entry_widgets',
+		'name'		=> 'Entry Widgets',
 		'version'	=> '1.0'
 	);
 
@@ -77,7 +77,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 			{
 				foreach ($query->result() as $row)
 				{
-				  if($row->status == 'draft')
+				  	if($row->status == 'draft')
 				  	{
 				  		$this->EE->session->cache['ep_better_workflow']['is_draft'] = 1;
 				  		$this->widget_cache['is_draft'] = 1;
@@ -270,6 +270,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		{	
 			$this->widget_cache['is_draft'] = 1;
 		}
+		// BWF is being an ass, or I'm being an ass? is_draft is not always set on a draft?
 		if(isset($_POST['epBwfEntry_create_draft']) && $_POST['epBwfEntry_create_draft'] == 'draft')
 		{
 			$this->widget_cache['is_draft'] = 1;
@@ -308,10 +309,10 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	// --------------------------------------------------------------------
 
 	/**
-	 * post_save
+	 * draft_save
 	 *
 	 * @access	public
-	 * @return	field data
+	 * @return	
 	 *
 	 */
 	public function draft_save($data, $draft_action)
@@ -342,6 +343,15 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 	}
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Discard BWF Draft
+	 *
+	 * @access	public
+	 * @return	
+	 *
+	 */
 	public function draft_discard()
 	{
 		
@@ -353,6 +363,15 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		return;
 	}
 
+	// --------------------------------------------------------------------
+
+	/**
+	 * Publish BWF Draft
+	 *
+	 * @access	public
+	 * @return	
+	 *
+	 */
 	public function draft_publish()
 	{
 		
@@ -378,8 +397,15 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		return;
 	}
 
+	// --------------------------------------------------------------------
 
-
+	/**
+	 * Save
+	 *
+	 * @access	public
+	 * @return	
+	 *
+	 */
 	private function _save()
 	{
 		// bail out here if draft_publish has been called from BWF.
@@ -479,4 +505,4 @@ class Entry_widgets_ft extends EE_Fieldtype {
 }
 
 /* End of file ft.google_maps.php */
-/* Location: ./system/expressionengine/third_party/google_maps/ft.google_maps.php */
+/* Location: ./system/expressionengine/third_party/entry_widgets/ft.entry_widgets.php */
