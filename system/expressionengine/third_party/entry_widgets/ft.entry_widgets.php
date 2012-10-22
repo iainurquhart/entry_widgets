@@ -53,27 +53,20 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	function display_field($data)
 	{
 
-		// BW is playing up, just force entry to exist before adding widgets.
-		if($this->EE->input->get_post('entry_id') == '')
-		{
-			// return "<p>Please save the entry before creating widgets</p>";
-		}
-
 		// make sure our field is associated with an area.
 		if($this->settings['widget_area_id'] == '')
 		{
-			return 'No area defined';
+			return 'No area defined, define areas via the module interface first.';
 		}
 
 		$entry_id = $this->EE->input->get_post('entry_id');
 
 		$this->widget_cache['is_draft'] = 0;
+		
 		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) && $this->EE->session->cache['ep_better_workflow']['is_draft']) 
 		{
 			$this->widget_cache['is_draft'] = 1;
 		}
-
-
 
 		// fix for better workflow not returning draft status on new drafts
 		if($entry_id)
@@ -364,8 +357,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 	public function draft_publish()
 	{
-		$this->widget_cache['is_draft'] = 1;
-
+		
 		 // Some Vars
 		$entry_id = $this->settings['entry_id'];
 		$widget_area_id = $this->settings['widget_area_id'];
@@ -383,6 +375,8 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->EE->db->where('is_draft', 1);
 		$this->EE->db->update('entry_widget_instances', array('is_draft' => 0));
 
+		$this->widget_cache['drafts_published'] = 1;
+
 		return;
 	}
 
@@ -390,7 +384,12 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 	private function _save()
 	{
-	
+		// bail out here if draft_publish has been called from BWF.
+		if(isset($this->widget_cache['drafts_published']) && $this->widget_cache['drafts_published'] == 1)
+		{
+			return;
+		}	
+
 		$widget_data = $this->widget_cache['data'];
 		$instances = array();
 
