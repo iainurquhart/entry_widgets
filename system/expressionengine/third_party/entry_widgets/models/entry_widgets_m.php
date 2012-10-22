@@ -89,7 +89,7 @@ class Entry_widgets_m
 			'created_on' => now(),
 			'updated_on' => now(),
 			'site_id' 	 => $this->site_id,
-			'is_draft' => (isset($this->widget_cache->is_draft) && $this->widget_cache->is_draft == 1) ? 1 : 0
+			'is_draft' => (isset($this->widget_cache['is_draft']) && $this->widget_cache['is_draft'] == 1) ? 1 : 0
 		));
 
 
@@ -109,7 +109,7 @@ class Entry_widgets_m
 				'widget_area_id' => $input['widget_area_id'],
 				'options' => $input['options'],
 				'order' => $key,
-				'is_draft' => (isset($this->widget_cache->is_draft) && $this->widget_cache->is_draft == 1) ? 1 : 0
+				'is_draft' => (isset($this->widget_cache['is_draft']) && $this->widget_cache['is_draft'] == 1) ? 1 : 0
 			)
 		);
 	}
