@@ -27,36 +27,7 @@
 	#mainContent ul.entry_widget_areas tr.widget-options li {
 		padding-bottom: 10px;
 	}
-	#mainContent button.add-widget-button {
-		color: #050505;
-		padding: 5px 10px;
-		margin: 10px 0;
-		background: -moz-linear-gradient(
-			top,
-			#ffffff 0%,
-			#ebebeb 50%,
-			#dbdbdb 50%,
-			#b5b5b5);
-		background: -webkit-gradient(
-			linear, left top, left bottom, 
-			from(#ffffff),
-			color-stop(0.50, #ebebeb),
-			color-stop(0.50, #dbdbdb),
-			to(#b5b5b5));
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-		border-radius: 10px;
-		border: 1px solid #949494;
-		-moz-box-shadow:
-			inset 0px 0px 2px rgba(255,255,255,1);
-		-webkit-box-shadow:
-			inset 0px 0px 2px rgba(255,255,255,1);
-		box-shadow:
-			inset 0px 0px 2px rgba(255,255,255,1);
-		text-shadow:
-			0px -1px 0px rgba(000,000,000,0.2),
-			0px 1px 0px rgba(255,255,255,1);
-	}
+	
 	.entry_widget {
 		padding: 10px 0px 0px 0px;
 		margin-bottom: 10px;
@@ -125,24 +96,17 @@
 		margin-left: 20px;
 		width: 200px;
 	}
+	#mainContent a.submit,
+	#mainContent a.submit:hover {
+		color: #fff;
+		text-decoration: none;
+		border-radius: 3px;
+	}
 </style>
 
 <ul class="entry_widget_areas">
 
 	<li data-area-id="<?= $settings['id'] ?>" class="widget-area-wrapper">
-
-		
-
-		<ul class="entry_widget_list" id="widget-list-<?= $settings['id'] ?>" style="display:none;">
-			<li><h3>Choose a widget type</h3></li>
-		<?php foreach($available_widgets as $widget):?>
-			<li>
-				<a href="#" data-field-name="<?=$field_name?>" data-widget-id="<?= $widget->id ?>" data-area-id="<?= $settings['id'] ?>"><?= $widget->title ?></a>
-			</li>
-		<?php endforeach ?>
-		</ul>
-
-		
 
 		<div class="entry_widget_data" id="widget-area-<?= $settings['id'] ?>">
 
@@ -155,9 +119,16 @@
 					}
 				}
 			?>
+			
 		</div>
 
-		<button class="add-widget-button">Add a Widget</button>
+		<select class="add-widget-select">
+			<?php foreach($available_widgets as $widget):?>
+				<option data-field-name="<?=$field_name?>" data-widget-id="<?= $widget->id ?>" data-area-id="<?= $settings['id'] ?>"><?= $widget->title ?></option>
+		<?php endforeach ?>
+		</select>
+
+		<a class="add-widget-button submit" href="#">Add</a>
 	</li>
 
 </ul>

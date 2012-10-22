@@ -32,18 +32,27 @@ $(function() {
 
 		$("body").delegate(".add-widget-button", "click", function(e) {
 
-			var area_id = $(this).parent().data('area-id');
+			var widget_select = $(this).prev('select');
 
-			$('#widget-list-'+area_id).dialog({
-				autoOpen: true,
-				height: 200,
-				width: 200,
-				modal: true
+			var field_name = $('option:selected', widget_select).data('field-name');
+			var widget_id  = $('option:selected', widget_select).data('widget-id');
+			var widget_area_id = $('option:selected', widget_select).data('area-id');
+
+			// fetch our widget via json
+			$.getJSON(EE.BASE+"&C=addons_modules&M=show_module_cp&module=entry_widgets&method=ajax_add_instance&widget_id="+widget_id+"&field_name="+field_name+"&widget_area_id="+widget_area_id, {}, function(data) {
+
+				console.log(data);
+				$('#widget-area-'+widget_area_id).append( data.view );
+				$('#widget-area-'+widget_area_id).updateWidgetIndexes();
+				$(".ui-dialog-content").dialog("close");
+
 			});
 
 			e.preventDefault();
 
 		});
+
+		/*
 		
 		$("body").delegate("ul.entry_widget_list a", "click", function(e) {
 
@@ -61,6 +70,7 @@ $(function() {
 			});
 			e.preventDefault();
 		});
+*/
 
 
 		$("body").delegate("a.widget-delete", "click", function(e) {
