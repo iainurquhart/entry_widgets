@@ -121,9 +121,8 @@
         }
 
         if ($field.attr('name')) {
-          var fieldName = $field.attr('name')
-            .replace(regex, '$1[' + rowCount + ']$2');
-
+          var fieldName = $field.attr('name').replace(regex, '$1[' + rowCount + ']$2');
+           // $field.attr('style','border: 1px solid red');
           $field.attr('name', fieldName);
         }
       });
@@ -146,33 +145,34 @@
 
 $(document).ready(function() {
 
-	var col_count = 100;
-	
- 	var fixHelper = function(e, ui) {
-		ui.children().each(function() {
-			$(this).width($(this).width());
-		});
-		var col_count = ui.children().size();
-		return ui;
-	}; 
+  var col_count = 100;
+  
+  var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+      $(this).width($(this).width());
+    });
+    var col_count = ui.children().size();
+    return ui;
+  }; 
 
-	var $container = $(".nolan_widget_table:not(.rolandified) tbody").roland();
-	var opts = $.extend({}, $.fn.roland.defaults);
+  var $container = $(".nolan_widget_table:not(.rolandified) tbody").roland();
+  var opts = $.extend({}, $.fn.roland.defaults);
 
-		$(".nolan_widget_table tbody").sortable({
-			helper: fixHelper, // fix widths
-			handle: '.nolan_drag_handle',
-			cursor: 'move',
-			update: function(event, ui) { 
-				$.fn.roland.updateIndexes($container, opts); 
-			},
-			'start': function (event, ui) {
-		        ui.placeholder.html('<td colspan="100"></td>');
-		    }
-		});
+    $(".nolan_widget_table tbody").sortable({
+      helper: fixHelper, // fix widths
+      handle: '.nolan_drag_handle',
+      cursor: 'move',
+      update: function(event, ui) { 
+        $.fn.roland.updateIndexes($container, opts); 
+      },
+      'start': function (event, ui) {
+            ui.placeholder.html('<td colspan="100"></td>');
+        }
+    });
 
-	$(".nolan_widget_table").addClass('rolandified');
-	
+  $(".nolan_widget_table").addClass('rolandified');
+   $('.entry_widget_areas').updateWidgetIndexes();
+  
 });
 
 

@@ -5,7 +5,7 @@
 		<?php echo form_input($field_name.'[label]', $options['label']); ?>
 	</li>
 </ul>
-<table class="nolan_widget_table widget_nest_sort" style="width: 80%;" border="0" cellspacing="0" cellpadding="0">
+<table class="nolan_widget_table widget_nest_sort"  border="0" cellspacing="0" cellpadding="0">
 	<thead>
 		<tr>
 			<th style='width: 10px;'></th>

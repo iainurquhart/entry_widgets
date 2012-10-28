@@ -1,0 +1,125 @@
+	#mainContent ul.entry_widget_areas,
+	#mainContent ul.entry_widget_areas li {
+		list-style-type: none;
+		margin: 0;
+		padding:0;
+	}
+	#mainContent ul.entry_widget_areas li.widget-area-wrapper {
+		padding: 10px 15px;
+		background: rgba(255,255,255, 0.8);
+		margin: 10px 0 ;
+		border-radius: 5px;
+		border: 1px solid rgba(0,0,0,0.15);
+	}
+	#mainContent li.widget-area-wrapper h3 {
+		margin: 0; 
+		padding:0;
+	}
+
+	#mainContent li.widget-area-wrapper div.entry_widget_data ol, 
+	#mainContent li.widget-area-wrapper div.entry_widget_data li {
+		list-style-type: none;
+	}
+	#mainContent ul.entry_widget_areas tr.widget-options td {
+		padding-top: 10px;
+	}
+	#mainContent ul.entry_widget_areas tr.widget-options li {
+		padding-bottom: 10px;
+	}
+	
+	.entry_widget {
+		padding: 10px 0px 0px 0px;
+		margin-bottom: 10px;
+	}
+	.entry_widget table {
+		box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+		border-radius: 3px;
+	}
+	.entry_widget table table {
+		box-shadow: none;
+	}
+	.entry_widget_list * {
+		outline:none;
+	}
+	#mainContent ul.entry_widget_areas th {
+		font-size: 14px; line-height: 17px;
+		height: 20px; vertical-align: middle;
+		padding: 8px 10px;
+	}
+	#mainContent ul.entry_widget_areas table table th {
+		padding: 5px;
+	}
+
+	#mainContent ul.entry_widget_areas a.widget-delete {
+		float: right;
+		text-decoration: none;
+		background: #d91350 ;
+		color: #fff;
+		display: inline-block;
+		width: 22px; height: 22px; text-align: center;
+		line-height: 20px;
+		margin: -2px 0 -5px 0;
+
+	background: -moz-linear-gradient(
+		top,
+		#ff0000 0%,
+		#400808);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#ff0000),
+		to(#400808));
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow:
+		0px 1px 3px rgba(0,0,0,0.3),
+		inset 0px 0px 1px rgba(0,0,0,0.3);
+	-webkit-box-shadow:
+		0px 1px 3px rgba(0,0,0,0.3),
+		inset 0px 0px 1px rgba(0,0,0,0.3);
+	box-shadow:
+		0px 1px 3px rgba(0,0,0,0.3),
+		inset 0px 0px 1px rgba(0,0,0,0.3);
+	text-shadow:
+		0px -1px 0px rgba(000,000,000,0.4),
+		0px 1px 0px rgba(255,255,255,0.3);
+	}
+	#mainContent .widget_placeholder {
+		background: rgba(0,0,0,0.3);
+		box-shadow: 0 0 15px rgba(0,0,0,0.3);
+		margin: 0px 0;
+		padding: 10px;
+	}
+
+	#mainContent input.widget_shortcode {
+		margin-left: 20px;
+		width: 200px;
+	}
+	#mainContent a.submit,
+	#mainContent a.submit:hover {
+		color: #fff;
+		text-decoration: none;
+		border-radius: 3px;
+	}
+	#mainContent .nolan_widget_table td.nolan_drag_handle {background-image: url(../gfx/drag_handle.png); background-repeat: no-repeat; background-position: 50% 50%; padding: 5px 12px; }
+#mainContent .nolan_widget_table .ui-sortable-helper {display: block; -webkit-box-shadow:  2px 2px 3px rgba(0,0,0,0.4); -moz-box-shadow: 0 0 5px rgba(0,0,0,0.4); box-shadow:  0 0 5px rgba(0,0,0,0.4); border-top: 1px solid #fff; opacity: 0.85;}
+#mainContent .nolan_widget_table td.nolan_drag_handle:hover {cursor: move; cursor: -webkit-grab;}
+#mainContent .nolan_widget_table a.add_row,
+#mainContent .nolan_widget_table a.remove_row {display: block; width: 16px; height: 16px; text-indent: 100%;white-space: nowrap;overflow: hidden; display: inline-block; }
+#mainContent .nolan_widget_table a.add_row {background: url(../gfx/plus.png); margin-right: 5px;}
+
+
+#mainContent .nolan_widget_table {width: 100%;}
+#mainContent .nolan_widget_table input {width: 99%; padding-left: 0; padding-right: 0;}
+#mainContent .nolan_widget_table input,
+#mainContent .nolan_widget_table input:focus {border: none; padding: 10px; margin: 0; font-size: 11px; font-family: 'Lucida Grande', sans-serif; }
+#mainContent .nolan_widget_table tr td { padding: 2px; background: #fff}
+#mainContent ul.entry_widget_areas  .nolan_widget_table tr td.nolan_content_col,
+#mainContent ul.entry_widget_areas  .nolan_widget_table tr td.nolan_nav { padding: 0;}
+#mainContent .nolan_widget_table a.remove_row {background: url(../gfx/minus.png);}
+#mainContent ul.entry_widget_areas  .nolan_widget_table tr td.nolan_nav {white-space: nowrap; text-align: center; vertical-align: middle; line-height: 16px; padding:0 10px; width: 10px;}
+#mainContent .nolan_widget_table tr td.nolan_drag_handle {}
+#mainContent .nolan_widget_table {}
+#mainContent .nolan_widget_table th { padding: 3px 5px;}
+
+#mainContent .nolan_widget_table tr.ui-sortable-placeholder td {background: #666; background: rgba(0,0,0,0.4); visibility: visible !important}
