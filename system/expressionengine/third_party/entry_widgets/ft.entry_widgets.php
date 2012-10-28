@@ -172,6 +172,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 			$this->widget_cache['assets_added'] = 1;
 			$this->EE->cp->add_to_head('
 				<script src="'.$this->asset_path.'/js/entry_widgets.js"></script>
+				<link rel="stylesheet" type="text/css" href="'.$this->asset_path.'/css/entry_widgets.css" />
 			');
 			$this->EE->cp->add_js_script('ui', 'sortable');
 		}
