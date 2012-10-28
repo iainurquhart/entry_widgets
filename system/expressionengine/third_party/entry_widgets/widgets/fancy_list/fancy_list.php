@@ -31,7 +31,7 @@ class Widget_Fancy_list extends Entry_widget
 	function __construct()
 	{
 		parent::__construct();
-		$this->asset_path = $this->EE->config->item('theme_folder_url').'third_party/entry_widgets/widgets/fancy_list';
+		$this->asset_path = $this->EE->config->item('theme_folder_url').'third_party/entry_widgets';
 		$this->cache =& $this->EE->session->cache['widget_fancy_list'];
 	}
 
@@ -63,7 +63,7 @@ class Widget_Fancy_list extends Entry_widget
 			'list_items' => $list_items,
 			'nav' => $this->nolan_nav,
 			'drag_handle' => $this->drag_handle,
-			'script' => '<script src="'.$this->asset_path.'/jquery.roland.js"></script>'
+			'script' => '<script src="'.$this->asset_path.'/js/jquery.roland.js"></script>'
 		);
 
 		return array('options' => $options); 
