@@ -2,7 +2,16 @@
 	<tbody>
 		<tr>
 			<td colspan="2"><label>What was said</label>
-				<?php echo form_textarea($field_name.'[quote_text]', $options['quote_text']); ?>
+				<?php 
+					$data = array(
+						'name'	=> $field_name.'[quote_text]',
+						'value'	=> $options['quote_text'],
+						'cols'	=> '5',
+						'style'	=> 'height:100px;'
+					);
+					echo form_textarea($data); 
+
+				?>
 			</td>
 		</tr>
 		<tr>

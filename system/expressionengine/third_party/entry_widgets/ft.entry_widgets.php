@@ -67,24 +67,6 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		{
 			$this->widget_cache['is_draft'] = 1;
 		}
-
-		// fix for better workflow not returning draft status on new drafts
-		if($entry_id)
-		{
-			$query = $this->EE->db->get_where('channel_titles', array('entry_id' => $entry_id));
-
-			if ($query->num_rows() == 1)
-			{
-				foreach ($query->result() as $row)
-				{
-				  	if($row->status == 'draft')
-				  	{
-				  		$this->EE->session->cache['ep_better_workflow']['is_draft'] = 1;
-				  		$this->widget_cache['is_draft'] = 1;
-				  	}
-				}
-			}
-		}
 		
 		$this->EE->load->library('entry_widget');
 		$this->EE->load->model('entry_widgets_m');
@@ -207,6 +189,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	function display_settings($data)
 	{
 
+
 		$this->EE->load->library('entry_widget');
 		$areas = $this->EE->entry_widget->list_areas();
 		$options = array();
@@ -227,9 +210,12 @@ class Entry_widgets_ft extends EE_Fieldtype {
 			}
 		}
 
+
+		$area_id = (isset($data['widget_area_id'])) ? $data['widget_area_id'] : '';
+
 		$this->EE->table->add_row(
 			lang('widget_area'),
-			form_dropdown('widget_area_id', $options)
+			form_dropdown('widget_area_id', $options, $area_id)
 		);
 	}
 	
@@ -244,9 +230,9 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 */
 	function save_settings($data)
 	{
-		return array(
-			'widget_area_id'	=> $this->EE->input->post('widget_area_id')
-		);
+		$data['widget_area_id']	= $this->EE->input->post('widget_area_id');
+
+		return $data;
 	}
 
 	
@@ -264,20 +250,11 @@ class Entry_widgets_ft extends EE_Fieldtype {
 
 		$this->EE->load->library('entry_widget');
 
-		$this->widget_cache['data'] = $data;
+		$this->widget_cache['data'][$this->field_id] = $data;
 		$this->widget_cache['is_draft'] = 0;
 		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) 
 			&& $this->EE->session->cache['ep_better_workflow']['is_draft']) 
 		{	
-			$this->widget_cache['is_draft'] = 1;
-		}
-		// BWF is being an ass, or I'm being an ass? is_draft is not always set on a draft?
-		if(isset($_POST['epBwfEntry_create_draft']) && $_POST['epBwfEntry_create_draft'] == 'draft')
-		{
-			$this->widget_cache['is_draft'] = 1;
-		}
-		if(isset($_POST['epBwfEntry_update_draft']) && $_POST['epBwfEntry_update_draft'] == 'draft')
-		{
 			$this->widget_cache['is_draft'] = 1;
 		}
 		// no widget data, off with their heads.
@@ -304,7 +281,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 */
 	function post_save($data)
 	{
-		$this->_save();
+		$this->_save($this->field_id);
 	}
 
 	// --------------------------------------------------------------------
@@ -320,6 +297,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	{
 		$this->widget_cache['is_draft'] = 1;
 
+
 		// Some Vars
 		$entry_id = $this->settings['entry_id'];
 		$widget_area_id = $this->settings['widget_area_id'];
@@ -329,7 +307,10 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->EE->db->where('is_draft', 1 );
 		$this->EE->db->delete('entry_widget_instances');
 
-		foreach ($this->widget_cache['data']  as $key => $widget)
+		$widget_data = (isset($this->widget_cache['data'][$this->settings['field_id']])) 
+							? $this->widget_cache['data'][$this->settings['field_id']] : array();
+
+		foreach ($widget_data  as $key => $widget)
 		{
 		  	 $this->EE->entry_widget->add_instance( 
 					$this->settings['entry_id'], 
@@ -407,15 +388,15 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 * @return	
 	 *
 	 */
-	private function _save()
+	private function _save($field_id)
 	{
 		// bail out here if draft_publish has been called from BWF.
 		if(isset($this->widget_cache['drafts_published']) && $this->widget_cache['drafts_published'] == 1)
 		{
 			return;
-		}	
+		}
 
-		$widget_data = $this->widget_cache['data'];
+		$widget_data = $this->widget_cache['data'][$field_id];
 		$instances = array();
 
 		if(is_array($widget_data))
