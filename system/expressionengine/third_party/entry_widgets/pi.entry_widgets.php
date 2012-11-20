@@ -100,6 +100,26 @@ class Entry_widgets extends Entry_widget {
 
 	}
 
+	public function extract_domain()
+	{
+		$url = $this->EE->TMPL->tagparams['url'];
+		$domain =  parse_url($url, PHP_URL_HOST);
+		return str_replace('www.', '', $domain);
+
+	} 
+
+	public function format_bytes() 
+	{ 
+
+		$bytes = $this->EE->TMPL->tagparams['bytes'];
+		$precision = 1;
+    	$base = log($bytes) / log(1024);
+   		$suffixes = array('', 'KB', 'MM', 'GB', 'TB');   
+
+    	return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+
+	} 
+
 	
 }
 /* End of file mod.entry_widgets.php */

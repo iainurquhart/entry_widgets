@@ -52,7 +52,7 @@
 					<?php 
 					if($widget_area['show_shortcode'])
 					{
-						echo form_input('x', '{'.$widget_area['slug'].':'.($row_count + 1).'}', 'class="widget_shortcode"'); 
+						echo form_input('x', '{'.$widget_area['slug'].':'.($row_count + 1).'}', 'class="widget_shortcode" onclick="setSelectionRange(0, 9999);" readonly="readonly"'); 
 					}
 					?>
 				 	<a class="widget-delete">x</a>

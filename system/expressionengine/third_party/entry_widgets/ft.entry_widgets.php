@@ -36,7 +36,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->widget_cache =& $this->EE->session->cache['entry_widgets_data'];
 
 		$this->site_id 		= $this->EE->config->item('site_id');
-		$this->asset_path 	= $this->EE->config->item('theme_folder_url').'third_party/entry_widgets/';
+		$this->asset_path 	= defined('URL_THIRD_THEMES') ? URL_THIRD_THEMES . '/entry_widgets' : $this->EE->config->item('theme_folder_url') . '/third_party/entry_widgets';
 		$this->drag_handle  = '&nbsp;';
 	}
 	
@@ -266,8 +266,46 @@ class Entry_widgets_ft extends EE_Fieldtype {
 			$this->EE->db->delete('entry_widget_instances');
 		}
 
-		return '';
+		$r = array();
+
+		// if we have widget data, flatten and store the options array as a string
+		// so the field contains relevant text for search etc.
+		if(is_array($data))
+		{
+			foreach ($data as $value) 
+			{
+				if(isset($value['options']))
+				{
+					$r = array_merge($r, $this->_flatten_array($value['options']));
+				}
+			}
+		}
+
+		$r = implode("\n", $r);
+
+
+		return ' '.$r;
 	}
+
+
+	// converts the widget data array into a flattened array so we can store the text as a string
+	private function _flatten_array($array, $preserve_keys = 0, &$out = array()) 
+	{
+		foreach($array as $key => $child)
+		{
+		    if(is_array($child))
+		        $out = $this->_flatten_array($child, $preserve_keys, $out);
+		    elseif($preserve_keys + is_string($key) > 1)
+		        $out[$key] = $child;
+		    else
+		        $out[] = $child;
+		}
+
+		$out = isset($out) ? array_merge(array_filter($out)) : array();
+
+		return $out;
+	}
+
 
 
 	// --------------------------------------------------------------------

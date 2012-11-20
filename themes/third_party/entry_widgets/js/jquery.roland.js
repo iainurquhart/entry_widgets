@@ -30,7 +30,6 @@
         // Reset the field values.
         $cloneRow.find('input').each(function() {
           var type = $(this).attr('type');
-
           switch (type.toLowerCase()) {
             case 'checkbox':
             case 'radio':
@@ -41,12 +40,14 @@
             case 'password':
             case 'search':
             case 'text':
+            case 'hidden':
               $(this).val('');
               break;
           }
         });
 
         $cloneRow.find('select').val('');
+        $cloneRow.find('.thumb_holder').html('');
 
         // Pre-add event. Only checks return value from last listener.
         if ($link.data('events').preAddRow !== undefined) {

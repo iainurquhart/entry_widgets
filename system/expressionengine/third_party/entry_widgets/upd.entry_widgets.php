@@ -21,7 +21,7 @@
 
 class Entry_widgets_upd {
 	
-	public $version = '0.1';
+	public $version = '0.2.2';
 	
 	private $EE;
 	
@@ -126,7 +126,52 @@ class Entry_widgets_upd {
 	 */	
 	public function update($current = '')
 	{
-		// If you have updates, drop 'em in here.
+		// --------------------------------------------------------------------
+		
+		// add better workflow column
+		if ($current < '0.2') 
+		{
+			$this->EE->load->dbforge();
+			$field = array(
+  				'is_draft' => array(
+  					'type' => 'TINYINT', 
+  					'constraint' => '1', 
+  					'unsigned' => TRUE, 
+  					'default' => 0
+  				)
+			);
+			$this->EE->dbforge->add_column('entry_widget_instances', $field);
+		}
+
+		if($current < '0.2.1')
+		{
+			$this->EE->load->library('layout');
+			$tabs['entry_widgets'] = array(
+			'entry_widgets' => array(
+					'visible' => 'true',
+					'collapse' => 'false',
+					'htmlbuttons' => 'false',
+					'width' => '100%'
+				)
+	        );
+			$this->EE->layout->delete_layout_fields($tabs);
+			$this->EE->layout->delete_layout_tabs($tabs);
+		}
+		if($current < '0.2.2')
+		{
+			$this->EE->load->library('layout');
+			$tabs['entry_widgets__widget_content_widgets'] = array(
+			'entry_widgets__widget_content_widgets' => array(
+					'visible' => 'true',
+					'collapse' => 'false',
+					'htmlbuttons' => 'false',
+					'width' => '100%'
+				)
+	        );
+			$this->EE->layout->delete_layout_fields($tabs);
+			$this->EE->layout->delete_layout_tabs($tabs);
+		}
+
 		return TRUE;
 	}
 	

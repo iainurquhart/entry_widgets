@@ -5,14 +5,7 @@
 		<?php echo form_input($field_name.'[label]', $options['label']); ?>
 	</li>
 </ul>
-<table class="nolan_widget_table widget_nest_sort"  border="0" cellspacing="0" cellpadding="0">
-	<thead>
-		<tr>
-			<th style='width: 10px;'></th>
-			<th>Items</th>
-			<th></th>
-		</tr>
-	</thead>
+<table class="nolan_widget_table widget_nest_sort entry_widget_notop"  border="0" cellspacing="0" cellpadding="0">
 	<tbody>
 
 		<?php if(!$options['list_items']) : ?>
@@ -31,5 +24,23 @@
 		</tr>
 		<?php endforeach ?>
 
+	</tbody>
+</table>
+
+
+
+<table style="margin-top: 10px;" class="mainTable entry_widget_notop" border="0" cellspacing="0" cellpadding="0" data-index="0"> 
+	<tbody>
+		<tr>
+			<td><label>Layout Type</label>
+				<?php echo form_dropdown($field_name.'[type]', $options['type_options'], $options['type']); ?>
+			</td>
+			<td><label>Bullet Type</label>
+				<?php echo form_dropdown($field_name.'[bullet_type]', $options['bullet_type_options'], $options['bullet_type']); ?>
+			</td>
+			<td><label>Additional CSS Classes</label>
+				<?php echo form_input($field_name.'[css_classes]', $options['css_classes']); ?>
+			</td>
+		</tr>
 	</tbody>
 </table>

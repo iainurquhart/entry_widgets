@@ -1,4 +1,4 @@
-<table class="mainTable" border="0" cellspacing="0" cellpadding="0" data-index="0"> 
+<table class="mainTable entry_widget_notop" border="0" cellspacing="0" cellpadding="0" data-index="0"> 
 	<tbody>
 		<tr>
 			<td colspan="2"><label>What was said</label>
