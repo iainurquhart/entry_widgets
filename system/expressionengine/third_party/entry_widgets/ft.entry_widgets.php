@@ -36,7 +36,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		$this->widget_cache =& $this->EE->session->cache['entry_widgets_data'];
 
 		$this->site_id 		= $this->EE->config->item('site_id');
-		$this->asset_path 	= defined('URL_THIRD_THEMES') ? URL_THIRD_THEMES . '/entry_widgets' : $this->EE->config->item('theme_folder_url') . '/third_party/entry_widgets';
+		$this->asset_path 	= $this->EE->config->item('theme_folder_url').'third_party/entry_widgets/';
 		$this->drag_handle  = '&nbsp;';
 	}
 	
@@ -70,6 +70,8 @@ class Entry_widgets_ft extends EE_Fieldtype {
 		
 		$this->EE->load->library('entry_widget');
 		$this->EE->load->model('entry_widgets_m');
+
+		$this->data = new stdClass();
 		
 		$this->data->available_widgets = array();
 		$this->data->field_name = $this->field_name;
