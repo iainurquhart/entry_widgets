@@ -81,6 +81,7 @@ class Entry_widgets extends Entry_widget {
 			$widget->options = $this->EE->entry_widget->decode_options( $widget->options );
 			$widget->widget_body = $this->EE->entry_widget->render( $widget->slug, $widget->options );
 			$widget->widget_count = $i++;
+			$widget->total_widget_count = count($widgets);
 			$variables[]['widgets'][] = (array) $widget;
 		}
 
@@ -114,7 +115,7 @@ class Entry_widgets extends Entry_widget {
 		$bytes = $this->EE->TMPL->tagparams['bytes'];
 		$precision = 1;
     	$base = log($bytes) / log(1024);
-   		$suffixes = array('', 'KB', 'MM', 'GB', 'TB');   
+   		$suffixes = array('', 'KB', 'MB', 'GB', 'TB');   
 
     	return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
 
