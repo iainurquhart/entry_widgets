@@ -31,7 +31,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 */
 	public function __construct()
 	{
-		parent::EE_Fieldtype();
+		EE_Fieldtype::__construct();
 		
 		$this->widget_cache =& $this->EE->session->cache['entry_widgets_data'];
 
@@ -191,7 +191,7 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	function display_settings($data)
 	{
 
-
+		$this->EE->lang->loadfile('entry_widgets');
 		$this->EE->load->library('entry_widget');
 		$areas = $this->EE->entry_widget->list_areas();
 		$options = array();
