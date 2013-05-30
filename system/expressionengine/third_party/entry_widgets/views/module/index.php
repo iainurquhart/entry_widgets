@@ -11,23 +11,21 @@
 		);
 
 	$this->table->add_row(
-			lang('area_title'),
-			form_input('area_title')
+			array('data' => lang('area_title'), 'style' => 'width: 30%'),
+			form_input('area_title', '', 'id="area-label"')
 		);
 	$this->table->add_row(
 			lang('area_slug'),
-			form_input('area_slug')
+			form_input('area_slug', '', 'id="area-slug"')
 		);
 	$this->table->add_row(
 			lang('show_shortcode'),
 			form_checkbox('show_shortcode', 1)
 		);
-	$this->table->add_row(
-			'',
-			form_submit('mysubmit', 'Add Widget Area')
-		);
 
 	echo $this->table->generate();
+
+	echo '<input type="submit" name="update" class="submit" value="'.lang('submit').'" />';
 
 	echo form_close();
 

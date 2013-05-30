@@ -60,6 +60,22 @@ class Entry_widgets_mcp {
 		$this->EE->cp->set_variable('cp_page_title', lang('entry_widgets_module_name'));
 		$this->EE->load->library('entry_widget');
 		$this->EE->load->library('table');
+		$this->EE->cp->add_js_script(
+			array(
+				'plugin' => array('ee_url_title')
+			)
+		);
+		$this->EE->cp->add_to_head('
+			<script type="text/javascript" charset="utf-8">
+			// <![CDATA[
+				$(document).ready(function() {
+					$("#area-label").bind("keyup keydown", function() {
+						$(this).ee_url_title("#area-slug");
+					});
+				});
+			// ]]>
+			</script>
+		');
 
 		$data = array();
 
