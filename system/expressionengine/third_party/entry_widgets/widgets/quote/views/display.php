@@ -1,15 +1,15 @@
 <blockquote class="content-quote">
-	<?=$quote_text?>
-	<?php if($who_said): ?>
+	{quote_text}
+	{if who_said}
 		<cite>
 			<span class="citee-name">
-				<strong><?=$who_said?></strong><?php if($position): ?>, <?=$position?><?php endif ?>
+				<strong>{who_said}</strong>{if position}, {position}{/if}
 			</span>
-			<?php if($company && $url): ?>
-				<a href="<?=$url?>" class="citee-url"><?=$company?></a>
-			<?php elseif($company): ?>
-				<span class="citee-company"><?=$company?></span>
-			<?php endif ?>
+			{if company && url}
+				<a href="{url}" class="citee-url">{company}</a>
+			{if:elseif company}
+				<span class="citee-company">{company}</span>
+			{/if}
 		</cite>
-	<?php endif ?>
+	{/if}
 </blockquote>

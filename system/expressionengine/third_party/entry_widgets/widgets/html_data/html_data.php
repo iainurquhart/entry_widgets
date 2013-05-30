@@ -22,17 +22,12 @@ class Widget_Html_data extends Entry_widget
 		)
 	);
 
-	public function run($options)
+	public function run($data)
 	{
-		if(empty($options['html_data']))
-		{
-			return array('output' => '');
-		}
-		
-		// Store the feed items
 		return array(
-			'output' => $options['html_data']
+			'html_data' => (!empty($data['html_data'])) ? $data['html_data'] : '' 
 		);
+
 	}
 	
 }

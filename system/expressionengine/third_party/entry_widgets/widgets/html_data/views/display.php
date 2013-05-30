@@ -1,1 +1,1 @@
-<?php echo $output; ?>
+{html_data}

@@ -49,20 +49,24 @@ class Widget_Fancy_list extends Entry_widget
 
 	public function run($options)
 	{
-
-		$items  = (isset($options['list_items'])) ? $options['list_items'] : array();
-		$label 	= (isset($options['label'])) ? $options['label'] : '';
-		$type 	= (isset($options['type'])) ? $options['type'] : 'floated';
-		$bullet_type = (isset($options['bullet_type'])) ? $options['bullet_type'] : '';
-		$css_classes = (isset($options['css_classes'])) ? $options['css_classes'] : '';
-
-		return array(
-			'items' => $items,
-			'label' => $label,
-			'type' => $type,
-			'bullet_type' => $bullet_type,
-			'css_classes' => $css_classes
+		$items = (isset($options['list_items'])) ? $options['list_items'] : array();
+		$i=1;
+		foreach($items as $key => $item)
+		{
+			$items[$key]['item_count'] = $i++;
+			$items[$key]['total_items'] = count($items);
+		}
+		$data = array(
+			'items' 		=> $items,
+			'label' 		=> (isset($options['label'])) ? $options['label'] : '',
+			'type' 			=> (isset($options['type'])) ? $options['type'] : 'floated',
+			'bullet_type' 	=> (isset($options['bullet_type'])) ? $options['bullet_type'] : '',
+			'css_classes' 	=> (isset($options['css_classes'])) ? $options['css_classes'] : ''
 		);
+
+		$data['has_items'] 	= (count($items)) ? TRUE : FALSE;
+
+		return $data;
 
 	}
 
