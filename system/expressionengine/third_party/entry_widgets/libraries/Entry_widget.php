@@ -454,9 +454,13 @@ $widget['instance_id'], // this should be widget_instance_id
 		// convert to array
 		is_array($data) OR $data = (array) $data;
 
-		$data['options'] = $options;
+		$widget_template = $this->load_view('display', '', TRUE);
+		$vars = array($data);
 
-		return $this->load_view('display', $data);
+		$widget_template = ee()->functions->prep_conditionals($widget_template, $vars);
+
+		return $this->EE->TMPL->parse_variables($widget_template, $vars);
+
     }
 
 
