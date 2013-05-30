@@ -1,17 +1,17 @@
-<aside class="call-to-action<?php if($cta_title =='') : ?> no_title<?php endif ?><?php if($cta_text =='') : ?> no_text<?php endif ?>">
-<?php if($cta_title) : ?>
-	<?php if($cta_url) : ?>
-		<h3><a href="<?=$cta_url?>"><?=$cta_title?></a></h3>
-	<?php else : ?>
-		<h3><?=$cta_title?></h3>
-	<?php endif ?>
-<?php endif ?>
-	<?php if($cta_text) : ?>
+<aside class="call-to-action">
+	{if cta_title}
+		<h3>
+			{if cta_url}<a href="{cta_url}">{/if}
+				{cta_title}
+			{if cta_url}</a>{/if}
+		</h3>
+	{/if}
+	{if cta_text}
 	<div class="call-to-action-text">
-		<?=$cta_text?>
+		{cta_text}
 	</div>
-	<?php endif ?>
-	<?php if($cta_url) : ?>
-		<p class="call-to-action-more"><a href="<?=$cta_url?>" class="button"><?=$cta_link_text?></a></p>
-	<?php endif ?>
+	{/if}
+	{if cta_url && cta_link_text}
+		<p class="call-to-action-more"><a href="{cta_url}">{cta_link_text}</a></p>
+	{/if}
 </aside>
