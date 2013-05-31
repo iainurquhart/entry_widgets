@@ -47,6 +47,11 @@ Then, create a custom field and associate the field with the area you created.
 
 	{/exp:channel:entries}
 
-Each widget is located within the 'widgets' directory and there are some examples for devs to review.
+Each widget is located within the '/system/expressionengine/third_party/entry_widgets/widgets' directory and there are some examples for devs to review.
+
+ - Call to action (simple set of fields for a call to action element)
+ - Fancy List (example of repeating rows and various options/params)
+ - HTML Data (simple html textarea)
+ - Quote (simple set of fields for pullquotes)
 
 Enjoy.
