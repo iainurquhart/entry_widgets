@@ -1,8 +1,6 @@
 # Entry Widgets for ExpressionEngine 2
 
-![Example Widget Publish Page](http://iain.co.nz/dev/widget_2.png)
-
-NOTE: this add-on is not production ready and is open for developer review/discussion.
+![Example Widget Publish Page](http://f.cl.ly/items/0J3z3w3n3L013h2c3f32/Image%202013.05.31%2012%3A34%3A51%20PM.png)
 
 ## Overview
 
@@ -35,51 +33,14 @@ Then, create a custom field and associate the field with the area you created.
 
 #### Code Example
 
-To output your widgets, you can use the following as an example. Note here I'm using Stash, and I'm also embedding content widgets inside a content area via passing by reference. In this case I'm also using Low Replace to strip the 'p' tags from around my widgets also.
-
-	{embed="layouts/master"}
-
 	{exp:channel:entries limit="1"}
 
-		<!-- create the needles for content widgets :) -->
-		{exp:entry_widgets:render area="content_widget" entry_id="{entry_id}" parse="inward"}		
-			{exp:stash:set name="content_widget:{widget_count}" type="snippet"}		
-				{widget_body}
-			{/exp:stash:set}
+		{exp:entry_widgets:render area="sidebar_features" entry_id="{entry_id}"}		
+			{widget_body}
 		{/exp:entry_widgets:render}
-
-		<!-- stash the main content, and stip <p> tags from around content widgets -->
-		{exp:stash:set name="main_content" parse_tags="yes"}
-			<h1>{title}</h1>
-			{exp:low_replace find="<p.*?>\n.*?({.*?:[0-9]+}).*?<\/p>" replace="$1" regex="yes"}
-				{main_content}
-			{/exp:low_replace} 
-		{/exp:stash:set}
-
-		<!-- stash a sidebar with some widgets from a single widget area -->
-		{exp:stash:set name="sidebar"}
-			{exp:entry_widgets:render area="sidebar_features" entry_id="{entry_id}" parse="inward"}		
-				{widget_body}
-			{/exp:entry_widgets:render}
-		{/exp:stash:set}
 
 	{/exp:channel:entries}
 
-And then in layouts/master
-	
-	...
-	<article>
-		{exp:stash:get name="main_content" parse_tags="yes"}
-	</article>
-	...
-	<aside>
-		{exp:stash:get name="sidebar"}
-	</aside>
-
-The {widget_body} variable, will render whatever is defined by the widget's display method. Each widget is located within the 'widgets' directory and there are two examples for devs to review.
-
-The [Related Entries](https://github.com/iainurquhart/entry_widgets/tree/master/system/expressionengine/third_party/entry_widgets/widgets/related_entries) widget should be a good example of what is possible with widgets, in particular - review the [display.php](https://github.com/iainurquhart/entry_widgets/blob/master/system/expressionengine/third_party/entry_widgets/widgets/related_entries/views/display.php) view.
-
-Yep, there's a channel entries tag in there, with widget values as parameters and it renders fine.
+Each widget is located within the 'widgets' directory and there are some examples for devs to review.
 
 Enjoy.
