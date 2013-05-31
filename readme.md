@@ -35,7 +35,13 @@ Then, create a custom field and associate the field with the area you created.
 
 	{exp:channel:entries limit="1"}
 
+		<!-- call the field directly -->
+		{my_widget_field}
+
+		<!-- or if you want to loop through, use the alternate module syntax -->
 		{exp:entry_widgets:render area="sidebar_features" entry_id="{entry_id}"}		
+			{widget_count}
+			{total_widget_count}
 			{widget_body}
 		{/exp:entry_widgets:render}
 
