@@ -67,14 +67,4 @@ class Widget_Quote extends Entry_widget
 
 	}
 	
-	public function form($options)
-	{
-		return array('options' => $options); 
-	}
-
-	public function save($options)
-	{		
-		return $options;
-	}
-	
 }
