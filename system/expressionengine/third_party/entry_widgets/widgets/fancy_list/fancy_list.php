@@ -98,9 +98,4 @@ class Widget_Fancy_list extends Entry_widget
 
 	}
 
-	public function save($options)
-	{	
-		return $options;
-	}
-
 }
