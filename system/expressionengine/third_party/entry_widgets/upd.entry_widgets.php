@@ -21,7 +21,7 @@
 
 class Entry_widgets_upd {
 	
-	public $version = '0.2.2';
+	public $version = '1.0';
 	
 	private $EE;
 	
