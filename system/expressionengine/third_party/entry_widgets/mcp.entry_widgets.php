@@ -57,7 +57,7 @@ class Entry_widgets_mcp {
 	 */
 	public function index()
 	{
-		$this->EE->cp->set_variable('cp_page_title', lang('entry_widgets_module_name'));
+		$this->EE->view->cp_page_title = lang('entry_widgets_module_name');
 		$this->EE->load->library('entry_widget');
 		$this->EE->load->library('table');
 		$this->EE->cp->add_js_script(
@@ -111,7 +111,7 @@ class Entry_widgets_mcp {
 		if(!$id)
 			show_error('Area you requested was not found');
 
-		$this->EE->cp->set_variable('cp_page_title', lang('entry_widgets_module_name'));
+		$this->EE->view->cp_page_title = lang('entry_widgets_module_name');
 		$this->EE->load->library('entry_widget');
 		$this->EE->load->library('table');
 
