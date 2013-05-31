@@ -18,7 +18,7 @@ $lang = array(
 	'widget_area_updated' => 'Widget Area Updated!',
 	'widget_area_created' => 'Widget Area Created!',
 	'widget_area_deleted' => 'Widget Area Deleted!',
-	'widget_confirm_delete' => 'Are you sure you want to delete this area?'
+	'widget_confirm_delete' => 'Are you sure you want to delete this area? This will remove all instances included within this area!'
 );
 
 /* End of file lang.entry_widgets.php */

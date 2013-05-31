@@ -151,9 +151,10 @@ class Entry_widgets_mcp {
 			show_error('Area you requested was not found');
 
 		$this->EE->db->delete('entry_widget_areas', array('id' => $id)); 
+		$this->EE->db->delete('entry_widget_instances', array('widget_area_id' => $id)); 
 
 		$this->EE->session->set_flashdata('message_success', lang('widget_area_deleted'));
-		
+
 		$this->EE->functions->redirect($this->_base_url);
 
 	}
