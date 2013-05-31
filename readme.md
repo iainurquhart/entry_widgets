@@ -13,10 +13,13 @@ The fundamental difference between the Entry Widgets Module and the Widgets Modu
 2. You have Areas & Entries
 3. You now have available instances of Widgets (with user defined parameters), within Areas, associated with Entries
 
-The add-on is being developed to fill the need of having user defined parameters for 'features' around a page. For example, Entry Widgets enables a publisher to output something like this using the "related entries widget":
+The add-on is being developed to fill the need of having user defined parameters for 'features' around a page. For example, Entry Widgets enables you to break down an element like a simple call to action into it's various components:
 
-  * Add a widget which shows 3 entries from News Channel, give the feature a title of "Recent News".
-  * Also show another feature, with 5 entries from Products Channel, give it a title "New Products".
+![Example Call to Action Widget](http://f.cl.ly/items/1V1X3E061d0b2N2e0g40/Image%202013.05.31%201%3A55%3A06%20PM.png)
+
+Advanced usage includes being able to utilize ExpressionEngine tags with widgets to have control over parameters. For example: Show x entries from x channel in x order.
+
+![Example Call to Action Widget](http://f.cl.ly/items/2b353m0G2g1D2A202j1K/Image%202013.05.31%201%3A57%3A49%20PM.png)
 
 You get the idea.
 
@@ -53,5 +56,9 @@ Each widget is located within the '/system/expressionengine/third_party/entry_wi
  - Fancy List (example of repeating rows and various options/params)
  - HTML Data (simple html textarea)
  - Quote (simple set of fields for pullquotes)
+
+#### Other information
+
+If you're a designer who hasn't written a plugin before, you're not going really going to get a whole lot of benefit from this add-on. The strength of Entry Widgets lies in being able to create custom widgets for projects extremely rapidly. To do this, you're going to have to know a little php and be able to pick apart the examples to get what you need to know.
 
 Enjoy.
