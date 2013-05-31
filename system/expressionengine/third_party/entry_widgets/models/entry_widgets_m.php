@@ -115,14 +115,24 @@ class Entry_widgets_m
 	}
 
 
-	function get_by_area($slug, $entry_id = '')
+	function get_by_area($id, $entry_id = '', $col = 'slug')
 	{
 		$this->EE->db->select('wi.id, w.slug, wi.id as instance_id, wi.widget_id, wi.widget_area_id, wa.slug as widget_area_slug, wi.options')
 			->from('entry_widget_areas wa')
 			->join('entry_widget_instances wi', 'wa.id = wi.widget_area_id')
-			->join('entry_widgets w', 'wi.widget_id = w.id')
-			->where('wa.slug', $slug)
-			->where('wi.site_id', $this->site_id);
+			->join('entry_widgets w', 'wi.widget_id = w.id');
+		
+			if($col == 'slug')
+			{
+				$this->EE->db->where('wa.slug', $id);
+			}
+
+			if($col == 'id')
+			{
+				$this->EE->db->where('wa.id', $id);
+			}
+
+			$this->EE->db->where('wi.site_id', $this->site_id);
 
 		if (isset($this->EE->session->cache['ep_better_workflow']['is_draft']) 
 			&& $this->EE->session->cache['ep_better_workflow']['is_draft'])
