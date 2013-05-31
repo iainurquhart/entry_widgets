@@ -66,10 +66,5 @@ class Widget_Call_to_action extends Entry_widget
 		$options['cta_link_text'] = (isset($options['cta_link_text'])) ? $options['cta_link_text'] : 'Find out more';
 		return array('options' => $options); 
 	}
-
-	public function save($options)
-	{		
-		return $options;
-	}
 	
 }
