@@ -174,7 +174,16 @@ class Entry_widgets_ft extends EE_Fieldtype {
 	 */
 	function replace_tag($data, $params = array(), $tagdata = FALSE)
 	{
-		return 'hello';
+
+		// I kinda feel dirty. Mommy.
+
+		$widget_area_id = $this->settings['widget_area_id'];
+		$entry_id = $this->row['entry_id'];
+		
+		$data = '{exp:entry_widgets:render area_id="'.$widget_area_id.'" entry_id="'.$entry_id.'"}{widget_body}{/exp:entry_widgets:render}';
+
+		return $data;
+		
 	}
 
 	

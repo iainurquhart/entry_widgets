@@ -57,6 +57,7 @@ class Entry_widgets extends Entry_widget {
 
 		$this->EE->load->model('entry_widgets_m');
 		$area = $this->EE->TMPL->fetch_param('area');
+		$area_id = $this->EE->TMPL->fetch_param('area_id');
 		$entry_id = $this->EE->TMPL->fetch_param('entry_id');
 		$wrapper_html = $this->EE->TMPL->tagdata ? $this->EE->TMPL->tagdata : $this->_default_wrapper;
 
@@ -67,7 +68,10 @@ class Entry_widgets extends Entry_widget {
 			return $this->_rendered_areas[$key];
 		}
 
-		$widgets = $this->EE->entry_widgets_m->get_by_area($area, $entry_id);
+		$by_type = ($area_id) ? 'id' : 'slug';
+		$id = ($area_id) ? $area_id : $area;
+
+		$widgets = $this->EE->entry_widgets_m->get_by_area($id, $entry_id, $by_type);
 
 		if(!$widgets)
 			return $this->EE->TMPL->no_results();
