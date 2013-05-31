@@ -79,21 +79,82 @@ class Entry_widgets_mcp {
 
 		$data = array();
 
-		$data['widget_areas'] = $this->EE->entry_widget->list_areas();
+		$data['widget_areas'] 	= $this->EE->entry_widget->list_areas();
 		$data['_form_base_url'] = $this->_form_base_url;
+		$data['_base_url'] 		= $this->_base_url;
 
 		if($_POST)
 		{
-			$w_data->widget_area->title = $this->EE->input->get_post('area_title');
-			$w_data->widget_area->slug = $this->EE->input->get_post('area_slug');
-			$w_data->widget_area->show_shortcode = $this->EE->input->get_post('show_shortcode');
+			$w = new stdClass();
+			$w->title = $this->EE->input->get_post('area_title');
+			$w->slug = $this->EE->input->get_post('area_slug');
+			$w->show_shortcode = $this->EE->input->get_post('show_shortcode');
 
-			$w_data->widget_area->id = $this->EE->entry_widget->add_area( $w_data->widget_area );
-			
+			$w->id = $this->EE->entry_widget->add_area( $w );
+			$this->EE->session->set_flashdata('message_success', lang('widget_area_created'));
 			$this->EE->functions->redirect($this->_base_url);
 		}
 
 		return $this->EE->load->view('module/index', $data, TRUE);
+
+	}
+
+	/**
+	 * Edit widget area
+	 *
+	 * @return 	void
+	 */
+	public function edit_area()
+	{
+		
+		$id = $this->EE->input->get_post('area_id');
+		if(!$id)
+			show_error('Area you requested was not found');
+
+		$this->EE->cp->set_variable('cp_page_title', lang('entry_widgets_module_name'));
+		$this->EE->load->library('entry_widget');
+		$this->EE->load->library('table');
+
+		$data = array();
+
+		$data['area'] 	= $this->EE->entry_widget->get_area( $id );
+		$data['_form_base_url'] = $this->_form_base_url;
+		$data['_base_url'] 		= $this->_base_url;
+
+		if($_POST)
+		{
+			$w = new stdClass();
+			$w->id = $this->EE->input->get_post('area_id');
+			$w->title = $this->EE->input->get_post('area_title');
+			$w->slug = $this->EE->input->get_post('area_slug');
+			$w->show_shortcode = $this->EE->input->get_post('show_shortcode');
+
+			$this->EE->entry_widget->update_area( $w );
+			$this->EE->session->set_flashdata('message_success', lang('widget_area_updated'));
+			$this->EE->functions->redirect($this->_base_url);
+		}
+
+		return $this->EE->load->view('module/edit_area', $data, TRUE);
+
+	}
+
+	/**
+	 * Edit widget area
+	 *
+	 * @return 	void
+	 */
+	public function delete_area()
+	{
+		
+		$id = $this->EE->input->get_post('area_id');
+		if(!$id)
+			show_error('Area you requested was not found');
+
+		$this->EE->db->delete('entry_widget_areas', array('id' => $id)); 
+
+		$this->EE->session->set_flashdata('message_success', lang('widget_area_deleted'));
+		
+		$this->EE->functions->redirect($this->_base_url);
 
 	}
 

@@ -416,6 +416,30 @@ $widget['instance_id'], // this should be widget_instance_id
 		return $this->EE->entry_widgets_m->insert_area((array)$input);
 	}
 
+	function edit_area($input)
+	{
+		if($input->title == '' || $input->slug == '')
+			show_error('You must add a title and a slug.');
+
+		$this->EE->load->helper('url');
+
+		$input->slug = url_title($input->slug, '_', TRUE);
+
+		return $this->EE->entry_widgets_m->insert_area((array)$input);
+	}
+
+	function update_area($input)
+	{
+		if($input->title == '' || $input->slug == '')
+			show_error('You must add a title and a slug.');
+
+		$this->EE->load->helper('url');
+
+		$input->slug = url_title($input->slug, '_', TRUE);
+
+		return $this->EE->entry_widgets_m->update_area((array)$input);
+	}
+
 
 
 	function get_instance($instance_id)

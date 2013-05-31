@@ -9,12 +9,17 @@ $lang = array(
 	'widgets_instance_title' => 'Widget Title',
 	'widget_areas' => 'Widget Areas',
 	'add_widget_area' => 'Add a Widget Area',
+	'edit_widget_area' => 'Edit a Widget Area',
 	'area_title' => 'Full Widget Area Name',
 	'area_slug' => 'Short Name<br />single word, no spaces',
 	'add_widget_area_instructions' => '<strong>Widgets have to live somewhere, define some areas for your widgets to live.</strong><br />Each area defined here can/should be associated with a Entry Widget field',
 	'no_areas_defined' => 'There are no widget areas defined yet',
-	'show_shortcode' => 'Show shortcode key on widget'
+	'show_shortcode' => 'Show shortcode key on widget',
+	'widget_area_updated' => 'Widget Area Updated!',
+	'widget_area_created' => 'Widget Area Created!',
+	'widget_area_deleted' => 'Widget Area Deleted!',
+	'widget_confirm_delete' => 'Are you sure you want to delete this area?'
 );
 
-/* End of file lang.global_fields.php */
-/* Location: /system/expressionengine/third_party/global_fields/language/english/lang.global_fields.php */
+/* End of file lang.entry_widgets.php */
+/* Location: /system/expressionengine/third_party/entry_widgets/language/english/lang.entry_widgets.php */

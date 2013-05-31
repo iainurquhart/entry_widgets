@@ -147,7 +147,6 @@ class Entry_widgets_m
 
 
 
-
 	public function insert_area($input)
 	{
 		$this->EE->db->insert('entry_widget_areas', array(
@@ -158,6 +157,13 @@ class Entry_widgets_m
 		));
 
 		return $this->EE->db->insert_id();
+	}
+
+	public function update_area($input)
+	{
+		$this->EE->db->where('id', $input['id']);
+		$this->EE->db->update('entry_widget_areas', $input); 
+		return TRUE;
 	}
 
 
