@@ -25,6 +25,8 @@ You get the idea.
 
 ## Usage
 
+Note, if you are using EE < 2.7.2 you'll need to [apply a small fix](https://support.ellislab.com/bugs/detail/19427) to the ExpressionEngine core otherwise you'll get a fatal error on the publish page.
+
 ### Installation
 Add the files as per any regular EE add-on, and enable the Module &amp; Fieldtype.
 
