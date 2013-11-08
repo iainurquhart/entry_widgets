@@ -13,11 +13,26 @@ class Entry_widget
 		$this->EE =& get_instance();
 		$this->EE->load->model('entry_widgets_m');
 
+		// allow config override of where widgets are located.
+		if($this->EE->config->item('entry_widget_path'))
+		{	
+			$paths = array(
+				$this->EE->config->item('entry_widget_path')
+			);
+			$widget_path = '';
+		}
+		else // default to our /entry_widgets/widgets folder
+		{
+			$paths = $this->EE->load->get_package_paths();
+			$widget_path = 'widgets';
+		}
+
+
 		// Map where all widgets are
-		foreach ($this->EE->load->get_package_paths() as $path)
+		foreach ($paths as $path)
 		{
 			
-			$widgets = glob($path.'widgets/*', GLOB_ONLYDIR);
+			$widgets = glob($path.$widget_path.'/*', GLOB_ONLYDIR);
 
 			if ( ! is_array($widgets))
 			{
