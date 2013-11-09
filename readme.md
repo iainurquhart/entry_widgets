@@ -36,6 +36,24 @@ Visit the module interface and add an Area. An area consists of a title and a sh
 
 Then, create a custom field and associate the field with the area you created.
 
+#### Config Overrides
+
+You can move the system/expressionengine/third_party/entry_widgets/wigets directory to another location using the 'entry_widget_path' config override.
+
+	$config['entry_widget_path'] = "/Users/myusername/Sites/ee272.dev/widgets/";
+
+The widgets folder should contain all the widgets for your project, for example
+	
+	/system
+	/public
+	- index.php
+	- admin.php
+	/widgets
+	- /html_data
+	- /fancy_list
+	- /call_to_action
+	- /etc
+
 #### Code Example
 
 	{exp:channel:entries limit="1"}
